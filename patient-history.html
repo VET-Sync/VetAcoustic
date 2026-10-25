@@ -1,0 +1,10 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover"><meta name="theme-color" content="#f4f5ef"><title>Patient history · VetAcoustics</title><script src="https://cdn.tailwindcss.com"></script><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="stylesheet" href="/static/css/app.css"></head>
+<body><div class="app-shell">
+  <header class="topbar"><a class="brand" href="/dashboard"><span class="brand-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12h3l2-5 4 11 2-6h5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>VetAcoustics<small>Clinical sound notes</small></span></a><div class="top-actions"><a class="top-label" href="/dashboard">Back to dashboard</a><button class="logout-button" id="logout-button" type="button">Sign out</button></div></header>
+  <main class="page-wrap"><div class="page-heading"><div><p class="eyebrow">Patient record</p><h1>Visit history</h1><p class="subheading">A chronological view of documented auscultation visits.</p></div><a href="/new-visit" class="button">New visit</a></div>
+    <section class="card history-profile" id="patient-profile"><div class="avatar" id="patient-avatar">…</div><div><h2 id="patient-name">Loading patient…</h2><p id="patient-details">Fetching clinical history</p></div></section>
+    <section class="card"><div class="list-header"><h2>Recorded visits</h2><span class="top-label" id="history-count"></span></div><div id="history-error" class="notice notice-error hidden" role="alert" style="margin:16px"></div><div id="history-list"></div></section>
+  </main>
+</div><script>window.VET_PATIENT_ID = {{ patient_id|tojson }};</script><script src="/static/js/common.js" defer></script><script src="/static/js/patient-history.js" defer></script></body></html>
