@@ -1,0 +1,1182 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="VetAcoustics" />
+    <meta name="theme-color" content="#4F5BF5" />
+    <title>VetAcoustics — Clinical Veterinary Auscultation &amp; Acoustic Analysis</title>
+    <meta name="description" content="Premium iPad-first clinical digital auscultation, anatomical landmark guidance, WAV signal capture, and acoustic spectrogram analysis for veterinarians." />
+    <meta property="og:title" content="VetAcoustics — Clinical Veterinary Auscultation &amp; Acoustic Analysis" />
+    <meta property="og:description" content="Premium iPad-first clinical digital auscultation, anatomical landmark guidance, WAV signal capture, and acoustic spectrogram analysis for veterinarians." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="manifest" href="manifest.json" />
+
+    <!-- Inter Typography from Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@500;600;700&display=swap" rel="stylesheet" />
+
+    <!-- Tailwind CSS via CDN + Immediate Class Dark Mode Configuration -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'sans-serif']
+            },
+            colors: {
+              primary: {
+                50: '#EEF0FF', 100: '#E0E4FF', 200: '#C3CAFF', 300: '#A0AAFF', 400: '#7F8BFF',
+                500: '#6270FF', 600: '#4F5BF5', 700: '#3E47D6', 800: '#3239A8', 900: '#2A3084'
+              }
+            }
+          }
+        }
+      };
+    </script>
+
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Custom Clinical Design System -->
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="theme.css" />
+  </head>
+
+  <body class="clinical-mesh-bg min-h-dvh flex flex-col lg:flex-row selection:bg-primary-600 selection:text-white">
+    <!-- ===================================================================== -->
+    <!-- PERSISTENT LEFT SIDEBAR NAV (iPad Landscape / Desktop >= 1024px)      -->
+    <!-- ===================================================================== -->
+    <aside class="hidden lg:flex lg:flex-col lg:w-64 lg:fixed lg:inset-y-0 lg:z-30 glass-nav border-r hairline-border select-none">
+      <!-- Brand Identity -->
+      <div class="px-6 pt-6 pb-5 flex items-center justify-between border-b hairline-border">
+        <button type="button" data-nav="dashboard" class="flex items-center gap-3 text-left group focus:outline-none">
+          <div class="w-11 h-11 rounded-2xl bg-primary-600 text-slate-50 flex items-center justify-center shadow-md shadow-primary-600/25 group-active:scale-95 transition-transform">
+            <i data-lucide="stethoscope" class="w-6 h-6"></i>
+          </div>
+          <div>
+            <span class="block type-20 font-semibold tracking-tight text-slate-900 dark:text-slate-100">VetAcoustics</span>
+            <span class="block type-12 text-slate-500 dark:text-slate-400">Clinical Auscultation</span>
+          </div>
+        </button>
+      </div>
+
+      <!-- Primary Navigation Links -->
+      <nav class="flex-1 px-4 py-6 space-y-2" aria-label="Main Sidebar Navigation">
+        <button type="button" data-nav="dashboard" class="nav-item w-full touch-target px-4 py-3 rounded-xl flex items-center gap-3.5 type-16 font-medium transition-all text-left">
+          <i data-lucide="layout-dashboard" class="w-5 h-5 shrink-0"></i>
+          <span>Dashboard</span>
+        </button>
+        <button type="button" data-nav="new-visit" class="nav-item w-full touch-target px-4 py-3 rounded-xl flex items-center gap-3.5 type-16 font-medium transition-all text-left">
+          <i data-lucide="activity" class="w-5 h-5 shrink-0"></i>
+          <span>New Visit</span>
+        </button>
+        <button type="button" data-nav="results" class="nav-item w-full touch-target px-4 py-3 rounded-xl flex items-center gap-3.5 type-16 font-medium transition-all text-left">
+          <i data-lucide="sparkles" class="w-5 h-5 shrink-0"></i>
+          <span>Analysis Results</span>
+        </button>
+        <button type="button" data-nav="history" class="nav-item w-full touch-target px-4 py-3 rounded-xl flex items-center gap-3.5 type-16 font-medium transition-all text-left">
+          <i data-lucide="folder-heart" class="w-5 h-5 shrink-0"></i>
+          <span>Visit History</span>
+        </button>
+      </nav>
+
+      <!-- Sidebar Footer: Collection Mode Status & Settings Trigger -->
+      <div class="p-4 border-t hairline-border space-y-3">
+        <div id="sidebar-collection-banner" class="hidden px-3.5 py-2.5 rounded-xl bg-primary-500/10 border border-primary-500/25">
+          <div class="flex items-center justify-between">
+            <span class="type-12 font-semibold text-primary-700 dark:text-primary-300">Dataset Collection Active</span>
+            <i data-lucide="database" class="w-4 h-4 text-primary-600 dark:text-primary-400"></i>
+          </div>
+          <p class="type-12 text-slate-600 dark:text-slate-400 mt-0.5">Appending Finding &amp; Case ID to WAV files</p>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <button type="button" id="btn-open-settings-sidebar" class="btn-secondary flex-1 type-14">
+            <i data-lucide="sliders-horizontal" class="w-4 h-4"></i>
+            <span>Settings</span>
+          </button>
+          <button type="button" id="btn-theme-toggle-sidebar" class="btn-secondary touch-target px-3" aria-label="Toggle Light or Dark Theme" title="Toggle Theme">
+            <i data-lucide="sun-moon" class="w-5 h-5"></i>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ===================================================================== -->
+    <!-- MAIN WORKSPACE WRAPPER                                                -->
+    <!-- ===================================================================== -->
+    <div class="flex-1 lg:pl-64 flex flex-col min-h-dvh pb-24 lg:pb-12">
+      <!-- Top Clinical Header Bar -->
+      <header class="sticky top-0 z-20 glass-nav border-b hairline-border pt-safe">
+        <div class="max-w-[1100px] mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+          <!-- Left: Brand (Portrait) or Current View Title -->
+          <div class="flex items-center gap-3 min-w-0">
+            <div class="lg:hidden w-10 h-10 rounded-xl bg-primary-600 text-slate-50 flex items-center justify-center shrink-0 shadow-sm">
+              <i data-lucide="stethoscope" class="w-5 h-5"></i>
+            </div>
+            <div class="min-w-0">
+              <div class="flex items-center gap-2.5">
+                <h1 id="header-title" class="type-20 font-semibold text-slate-900 dark:text-slate-100 truncate">VetAcoustics</h1>
+                <span id="header-collection-indicator" class="hidden type-12 font-medium text-primary-700 dark:text-primary-300">· Collection Mode</span>
+              </div>
+              <p id="header-subtitle" class="type-12 text-slate-500 dark:text-slate-400 truncate">Digital Stethoscope &amp; Landmark Protocol</p>
+            </div>
+          </div>
+
+          <!-- Right: Instrument Status & Quick Utility Controls -->
+          <div class="flex items-center gap-2.5 shrink-0">
+            <!-- Instrument Audio Status Pill -->
+            <div id="mic-status-pill" class="px-3.5 py-2 rounded-full bg-slate-200/70 dark:bg-slate-800/80 border hairline-border flex items-center gap-2">
+              <span id="mic-status-dot" class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+              <span id="mic-status-text" class="type-12 font-medium text-slate-700 dark:text-slate-200 whitespace-nowrap">Mic ready</span>
+            </div>
+
+            <!-- Theme & Settings Controls (visible on portrait/tablet) -->
+            <button type="button" id="btn-theme-toggle-header" class="lg:hidden btn-secondary touch-target px-3" aria-label="Toggle Light or Dark Theme">
+              <i data-lucide="sun-moon" class="w-5 h-5"></i>
+            </button>
+            <button type="button" id="btn-open-settings-header" class="btn-secondary touch-target px-3.5" aria-label="Open Clinical Settings">
+              <i data-lucide="settings-2" class="w-5 h-5"></i>
+              <span class="hidden sm:inline type-14">Settings</span>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- =================================================================== -->
+      <!-- SPA VIEW CONTAINER (Max-width 1100px with generous clinical space)  -->
+      <!-- =================================================================== -->
+      <main class="flex-1 w-full max-w-[1100px] mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-8">
+
+        <!-- ================================================================= -->
+        <!-- VIEW 1: DASHBOARD                                                 -->
+        <!-- ================================================================= -->
+        <section id="view-dashboard" class="spa-view view-visible view-active space-y-8" aria-labelledby="dashboard-greeting">
+          <!-- Hero Clinical Greeting & Primary CTA Card -->
+          <div class="glass-card-elevated hero-signal p-6 sm:p-8 relative overflow-hidden">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+              <div class="space-y-2 max-w-xl">
+                <p id="dashboard-date-label" class="type-14 font-medium text-primary-700 dark:text-primary-400">Friday Clinical Shift · iPad Auscultation Workstation</p>
+                <h2 id="dashboard-greeting" class="type-32 sm:type-44 font-semibold text-slate-900 dark:text-slate-50 tracking-tight">Good morning, Dr. Vance</h2>
+                <p class="type-16 text-slate-600 dark:text-slate-300">
+                  Capture uncompressed 16-bit PCM mono WAV recordings with guided intercostal placement and real-time spectral analysis.
+                </p>
+              </div>
+              <div class="flex flex-col sm:flex-row md:flex-col gap-3 shrink-0">
+                <button type="button" id="btn-hero-start-auscultation" class="btn-primary min-h-[56px] px-7 type-16 font-semibold shadow-lg">
+                  <i data-lucide="plus-circle" class="w-5 h-5"></i>
+                  <span>Start New Auscultation</span>
+                </button>
+                <button type="button" id="btn-hero-start-protocol" class="btn-secondary min-h-[48px] px-5 type-14">
+                  <i data-lucide="list-checks" class="w-4 h-4 text-primary-600 dark:text-primary-400"></i>
+                  <span>Launch Full Site Protocol</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Stat Tiles Grid (Tabular Numerals) -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
+            <div class="glass-card p-5 sm:p-6 flex items-start justify-between">
+              <div class="space-y-1">
+                <span class="type-14 font-medium text-slate-500 dark:text-slate-400">Total Recordings</span>
+                <p id="stat-total-recordings" class="type-32 font-semibold text-slate-900 dark:text-slate-100 tabular-nums">3</p>
+                <span class="type-12 text-slate-500 dark:text-slate-400 block">Stored in local clinic log</span>
+              </div>
+              <div class="w-11 h-11 rounded-xl bg-primary-500/10 text-primary-600 dark:text-primary-400 flex items-center justify-center shrink-0">
+                <i data-lucide="file-audio" class="w-5 h-5"></i>
+              </div>
+            </div>
+
+            <div class="glass-card p-5 sm:p-6 flex items-start justify-between">
+              <div class="space-y-1">
+                <span class="type-14 font-medium text-slate-500 dark:text-slate-400">This Week</span>
+                <p id="stat-this-week" class="type-32 font-semibold text-slate-900 dark:text-slate-100 tabular-nums">3</p>
+                <span class="type-12 text-emerald-600 dark:text-emerald-400 block">16-bit PCM WAV verified</span>
+              </div>
+              <div class="w-11 h-11 rounded-xl bg-sky-500/10 text-sky-600 dark:text-sky-400 flex items-center justify-center shrink-0">
+                <i data-lucide="calendar-check-2" class="w-5 h-5"></i>
+              </div>
+            </div>
+
+            <div class="glass-card p-5 sm:p-6 flex items-start justify-between">
+              <div class="space-y-1">
+                <span class="type-14 font-medium text-slate-500 dark:text-slate-400">Next WAV Export Counter</span>
+                <p id="stat-next-counter" class="type-32 font-semibold text-slate-900 dark:text-slate-100 tabular-nums">#004</p>
+                <span class="type-12 text-slate-500 dark:text-slate-400 block">Auto-incrementing file index</span>
+              </div>
+              <div class="w-11 h-11 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0">
+                <i data-lucide="hash" class="w-5 h-5"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recent Visits Section -->
+          <div class="space-y-4">
+            <div class="flex items-center justify-between gap-4">
+              <div>
+                <h3 class="type-20 font-semibold text-slate-900 dark:text-slate-100">Recent Clinical Visits</h3>
+                <p class="type-14 text-slate-500 dark:text-slate-400">Tap any visit record to review acoustic differentials and recommended workup</p>
+              </div>
+              <button type="button" data-nav="history" class="btn-ghost type-14 text-primary-700 dark:text-primary-400">
+                <span>View All History</span>
+                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+              </button>
+            </div>
+
+            <!-- Recent Visits Container (Populated by DataService) -->
+            <div id="dashboard-recent-visits" class="space-y-3"></div>
+          </div>
+        </section>
+
+        <!-- ================================================================= -->
+        <!-- VIEW 2: NEW VISIT (Guided 3-Step Mindray-Style Flow + Recording)  -->
+        <!-- ================================================================= -->
+        <section id="view-new-visit" class="spa-view space-y-6" aria-label="New Auscultation Visit">
+          <!-- Top Patient Signalment & Mode Toolbar Card -->
+          <div class="glass-card p-5 sm:p-6 space-y-5">
+            <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 border-b hairline-border pb-4">
+              <div>
+                <h2 class="type-24 font-semibold text-slate-900 dark:text-slate-100">New Auscultation Session</h2>
+                <p class="type-14 text-slate-500 dark:text-slate-400">Complete patient signalment and select anatomical auscultation site</p>
+              </div>
+
+              <!-- Guided Full Protocol Toggle & Manual Dropdown Fallback Toggle -->
+              <div class="flex flex-wrap items-center gap-3">
+                <!-- Full Protocol Mode Switch -->
+                <div class="flex items-center gap-3 px-3.5 py-2 rounded-xl bg-slate-200/60 dark:bg-slate-800/70 border hairline-border">
+                  <button
+                    type="button"
+                    id="toggle-full-protocol"
+                    role="switch"
+                    aria-checked="false"
+                    class="toggle-switch"
+                    aria-label="Enable Full Protocol Mode"
+                  >
+                    <span class="toggle-thumb"></span>
+                  </button>
+                  <div class="text-left">
+                    <span class="block type-14 font-medium text-slate-900 dark:text-slate-100">Full protocol</span>
+                    <span id="protocol-summary-caption" class="block type-12 text-slate-500 dark:text-slate-400">Single site mode</span>
+                  </div>
+                </div>
+
+                <!-- Manual Selection Fallback Button -->
+                <button type="button" id="btn-toggle-manual-fallback" class="btn-secondary type-14">
+                  <i data-lucide="sliders" class="w-4 h-4"></i>
+                  <span id="manual-fallback-btn-label">Manual selection</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Patient Signalment Inputs -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div>
+                <label for="input-patient-name" class="block type-12 font-medium text-slate-600 dark:text-slate-300 mb-1.5">Patient Name *</label>
+                <input
+                  id="input-patient-name"
+                  type="text"
+                  value="Barnaby"
+                  placeholder="e.g. Barnaby, Bella, Apollo"
+                  class="clinical-input"
+                />
+              </div>
+              <div>
+                <label for="input-patient-breed" class="block type-12 font-medium text-slate-600 dark:text-slate-300 mb-1.5">Breed / Signalment</label>
+                <input
+                  id="input-patient-breed"
+                  type="text"
+                  value="Cavalier King Charles · 7y MN"
+                  placeholder="e.g. Golden Retriever · 5y FS"
+                  class="clinical-input"
+                />
+              </div>
+              <div class="sm:col-span-2">
+                <label for="input-visit-notes" class="block type-12 font-medium text-slate-600 dark:text-slate-300 mb-1.5">Clinical Notes (Optional)</label>
+                <input
+                  id="input-visit-notes"
+                  type="text"
+                  placeholder="Resting RR 24 bpm, mild nocturnal cough, calm demeanor..."
+                  class="clinical-input"
+                />
+              </div>
+            </div>
+
+            <!-- Collection Mode Extra Fields (Shown when Collection Mode is enabled in Settings) -->
+            <div id="collection-mode-fields" class="hidden pt-3 border-t hairline-border grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label for="select-collection-finding" class="block type-12 font-semibold text-primary-700 dark:text-primary-300 mb-1.5">
+                  Collection Mode: Ground-Truth Finding Label
+                </label>
+                <select id="select-collection-finding" class="clinical-input">
+                  <option value="Normal">Normal</option>
+                  <option value="Wheezes">Wheezes</option>
+                  <option value="Crackles">Crackles</option>
+                  <option value="Stridor">Stridor</option>
+                  <option value="Purring">Purring</option>
+                  <option value="Panting">Panting</option>
+                  <option value="Hair rub">Hair rub</option>
+                </select>
+              </div>
+              <div>
+                <label for="input-collection-case-id" class="block type-12 font-semibold text-primary-700 dark:text-primary-300 mb-1.5">
+                  Collection Mode: Clinic Case ID
+                </label>
+                <input
+                  id="input-collection-case-id"
+                  type="text"
+                  value="CASE-2026-104"
+                  placeholder="e.g. CASE-2026-104"
+                  class="clinical-input tabular-nums"
+                />
+              </div>
+            </div>
+
+            <!-- Hidden Manual Selection Fallback Dropdowns (Section B Requirement: Keep old dropdowns as hidden fallback) -->
+            <div id="manual-selection-panel" class="hidden pt-4 border-t hairline-border space-y-4">
+              <div class="flex items-center justify-between">
+                <span class="type-14 font-semibold text-slate-800 dark:text-slate-200">Manual Site Selection Fallback</span>
+                <span class="type-12 text-slate-500 dark:text-slate-400">Synchronized with anatomical selector</span>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div>
+                  <label for="manual-species" class="block type-12 font-medium text-slate-600 dark:text-slate-300 mb-1.5">Species</label>
+                  <select id="manual-species" class="clinical-input">
+                    <option value="Dog">Dog</option>
+                    <option value="Cat">Cat</option>
+                    <option value="Horse">Horse</option>
+                    <option value="Cattle">Cattle</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="manual-target" class="block type-12 font-medium text-slate-600 dark:text-slate-300 mb-1.5">Listening Target</label>
+                  <select id="manual-target" class="clinical-input"></select>
+                </div>
+                <div>
+                  <label for="manual-side" class="block type-12 font-medium text-slate-600 dark:text-slate-300 mb-1.5">Side</label>
+                  <select id="manual-side" class="clinical-input">
+                    <option value="left">Left</option>
+                    <option value="right">Right</option>
+                    <option value="ventral">Ventral</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="manual-site" class="block type-12 font-medium text-slate-600 dark:text-slate-300 mb-1.5">Auscultation Site</label>
+                  <select id="manual-site" class="clinical-input"></select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- =============================================================== -->
+          <!-- SECTION B: GUIDED 3-STEP SPECIES & AUSCULTATION SITE SELECTOR   -->
+          <!-- =============================================================== -->
+          <div id="guided-selector-wrapper" class="space-y-6">
+            <!-- Stepper Progress Header -->
+            <div class="flex flex-wrap items-center justify-between gap-4">
+              <div class="segmented-control" role="tablist" aria-label="Guided Auscultation Steps">
+                <button type="button" id="step-tab-1" class="segmented-btn active" data-step="1">
+                  <span class="w-5 h-5 rounded-full bg-primary-600 text-white type-12 flex items-center justify-center tabular-nums">1</span>
+                  <span>Species</span>
+                </button>
+                <button type="button" id="step-tab-2" class="segmented-btn" data-step="2">
+                  <span class="w-5 h-5 rounded-full bg-slate-300 dark:bg-slate-700 text-slate-800 dark:text-slate-200 type-12 flex items-center justify-center tabular-nums">2</span>
+                  <span>Target &amp; Landmarks</span>
+                </button>
+                <button type="button" id="step-tab-3" class="segmented-btn" data-step="3">
+                  <span class="w-5 h-5 rounded-full bg-slate-300 dark:bg-slate-700 text-slate-800 dark:text-slate-200 type-12 flex items-center justify-center tabular-nums">3</span>
+                  <span>Signal Capture</span>
+                </button>
+              </div>
+
+              <!-- Veterinary Landmark Verification Notice -->
+              <div class="flex items-center gap-2 text-amber-700 dark:text-amber-300 bg-amber-500/10 border border-amber-500/25 px-3.5 py-2 rounded-xl">
+                <i data-lucide="shield-alert" class="w-4 h-4 shrink-0"></i>
+                <span class="type-12 font-medium">Landmarks are approximate - verify with the supervising veterinarian</span>
+              </div>
+            </div>
+
+            <!-- STEP 1: SPECIES FULL-SCREEN GRID OF LARGE ILLUSTRATED CARDS -->
+            <div id="guided-step-1" class="space-y-4">
+              <div class="flex items-center justify-between">
+                <div>
+                  <h3 class="type-20 font-semibold text-slate-900 dark:text-slate-100">Step 1 — Select Patient Species</h3>
+                  <p class="type-14 text-slate-500 dark:text-slate-400">Tap a species card to load its ribcage coordinate model and listening targets</p>
+                </div>
+              </div>
+
+              <div id="species-cards-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                <!-- Populated dynamically from window.ANATOMY_DATA -->
+              </div>
+            </div>
+
+            <!-- STEP 2 & STEP 3: INTERACTIVE SILHOUETTE + PLACEMENT INSTRUCTIONS -->
+            <div id="guided-step-2" class="hidden space-y-6">
+              <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                <!-- Left 7 Columns: Interactive Lateral Silhouette & Target Option Chips -->
+                <div class="lg:col-span-7 glass-card-elevated p-5 sm:p-6 space-y-5">
+                  <!-- Top Stage Controls: Species Badge, Left/Right Side Toggle, Rib Overlay Toggle -->
+                  <div class="flex flex-wrap items-center justify-between gap-3">
+                    <div class="flex items-center gap-2.5">
+                      <button type="button" id="btn-back-to-species" class="btn-secondary px-3 py-2 min-h-[42px] type-12">
+                        <i data-lucide="chevron-left" class="w-4 h-4"></i>
+                        <span>Species</span>
+                      </button>
+                      <div>
+                        <span id="stage-species-title" class="type-16 font-semibold text-slate-900 dark:text-slate-100 block">Dog</span>
+                        <span id="stage-species-ribcount" class="type-12 text-slate-500 dark:text-slate-400 block tabular-nums">13 Ribs · Lateral View</span>
+                      </div>
+                    </div>
+
+                    <div class="flex flex-wrap items-center gap-2.5">
+                      <!-- Left / Right / Ventral Side Toggle -->
+                      <div class="segmented-control" role="group" aria-label="Anatomical Side Selector">
+                        <button type="button" id="btn-side-left" class="segmented-btn active" data-side="left">Left Side</button>
+                        <button type="button" id="btn-side-right" class="segmented-btn" data-side="right">Right Side</button>
+                        <button type="button" id="btn-side-ventral" class="segmented-btn" data-side="ventral">Ventral</button>
+                      </div>
+
+                      <!-- Toggleable Rib & Intercostal Overlay Button -->
+                      <button type="button" id="btn-toggle-ribs" class="btn-secondary min-h-[42px] px-3.5 type-12 border-primary-600/40 text-primary-700 dark:text-primary-300">
+                        <i data-lucide="bone" class="w-4 h-4"></i>
+                        <span id="rib-toggle-label">Ribs &amp; ICS: On</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Interactive SVG Silhouette Viewport -->
+                  <div class="relative rounded-2xl bg-slate-100/80 dark:bg-slate-900/75 border hairline-border overflow-hidden p-2 sm:p-4">
+                    <!-- Orientation Tag -->
+                    <div class="flex items-center justify-between px-2 pt-1 pb-2">
+                      <span id="svg-orientation-badge" class="type-12 font-medium text-slate-500 dark:text-slate-400">
+                        Cranial (Head) ← · → Caudal (Tail) · Left Hemithorax
+                      </span>
+                      <span class="type-12 text-primary-700 dark:text-primary-400 font-medium">Tap any stethoscope marker</span>
+                    </div>
+
+                    <!-- Main Interactive SVG (800 x 500 viewBox) -->
+                    <div class="relative w-full aspect-[16/10] flex items-center justify-center">
+                      <svg
+                        id="interactive-anatomy-svg"
+                        viewBox="0 0 800 500"
+                        class="w-full h-full select-none"
+                        role="img"
+                        aria-label="Interactive veterinary auscultation landmark diagram"
+                      >
+                        <defs>
+                          <radialGradient id="tealTargetGlow" cx="50%" cy="50%" r="55%">
+                            <stop offset="0%" stop-color="#14B8A6" stop-opacity="0.38" />
+                            <stop offset="65%" stop-color="#0D9488" stop-opacity="0.14" />
+                            <stop offset="100%" stop-color="#0D9488" stop-opacity="0" />
+                          </radialGradient>
+                        </defs>
+
+                        <!-- Flippable Group for Left vs Right Lateral Orientation -->
+                        <g id="svg-animal-transform-group">
+                          <!-- Base Animal Line-Art Silhouette Layer -->
+                          <g id="svg-base-silhouette"></g>
+
+                          <!-- Pulsing Target Region Highlight Layer -->
+                          <g id="svg-target-region-layer"></g>
+
+                          <!-- Computed Curved Ribs & Intercostal Space Numbers Overlay -->
+                          <g id="svg-rib-overlay-layer"></g>
+
+                          <!-- Interactive Stethoscope Markers Layer -->
+                          <g id="svg-markers-layer"></g>
+                        </g>
+                      </svg>
+
+                      <!-- Neck Close-Up Inset for Trachea (Shown automatically when Trachea is active) -->
+                      <div
+                        id="trachea-neck-inset"
+                        class="hidden absolute top-3 right-3 w-48 sm:w-56 glass-card-elevated p-3 border border-primary-500/40 shadow-lg"
+                      >
+                        <div class="flex items-center justify-between mb-1.5">
+                          <span class="type-12 font-semibold text-primary-700 dark:text-primary-300">Ventral Neck Midline Inset</span>
+                          <span class="type-12 text-slate-400">Trachea</span>
+                        </div>
+                        <svg id="trachea-inset-svg" viewBox="175 115 140 140" class="w-full h-28 rounded-lg bg-slate-900/10 dark:bg-slate-950/50"></svg>
+                        <p class="type-12 text-slate-500 dark:text-slate-400 mt-1">
+                          Larynx · Mid-cervical · Thoracic inlet
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Target Option Chips (Driven by anatomy.js for the selected species) -->
+                  <div class="space-y-2.5">
+                    <div class="flex items-center justify-between">
+                      <span class="type-12 font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                        Step 2 — What to Listen To (Anatomical Target)
+                      </span>
+                      <span id="target-summary-hint" class="type-12 text-slate-500 dark:text-slate-400"></span>
+                    </div>
+                    <div id="target-chips-container" class="flex flex-wrap gap-2.5"></div>
+                  </div>
+
+                  <!-- Specific Site Chips for the Active Target & Side -->
+                  <div class="space-y-2.5 pt-2 border-t hairline-border">
+                    <div class="flex items-center justify-between">
+                      <span class="type-12 font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                        Auscultation Sites on Selected Side
+                      </span>
+                      <span id="site-count-label" class="type-12 text-slate-500 dark:text-slate-400 tabular-nums"></span>
+                    </div>
+                    <div id="site-chips-container" class="flex flex-wrap gap-2"></div>
+                  </div>
+                </div>
+
+                <!-- Right 5 Columns: STEP 3 PLACEMENT INSTRUCTIONS CARD & PROTOCOL TRACKER -->
+                <div class="lg:col-span-5 space-y-5">
+                  <!-- Guided Protocol Progress Card (Visible when Full Protocol mode is toggled ON) -->
+                  <div id="protocol-progress-card" class="hidden glass-card p-5 border-primary-500/30 space-y-4">
+                    <div class="flex items-center justify-between gap-4">
+                      <div class="flex items-center gap-3.5">
+                        <!-- SVG Progress Ring -->
+                        <div class="relative w-14 h-14 flex items-center justify-center shrink-0">
+                          <svg class="w-14 h-14 -rotate-90" viewBox="0 0 56 56">
+                            <circle cx="28" cy="28" r="23" stroke="currentColor" stroke-width="5" fill="none" class="text-slate-200 dark:text-slate-800" />
+                            <circle
+                              id="protocol-ring-circle"
+                              cx="28"
+                              cy="28"
+                              r="23"
+                              stroke="#0D9488"
+                              stroke-width="5"
+                              stroke-linecap="round"
+                              fill="none"
+                              stroke-dasharray="144.5"
+                              stroke-dashoffset="144.5"
+                            />
+                          </svg>
+                          <span id="protocol-ring-text" class="absolute type-12 font-semibold tabular-nums text-slate-900 dark:text-slate-100">0/6</span>
+                        </div>
+                        <div>
+                          <span class="type-16 font-semibold text-slate-900 dark:text-slate-100 block">Full Protocol Mode</span>
+                          <span id="protocol-step-subtitle" class="type-12 text-slate-500 dark:text-slate-400 block">Walk through every site sequentially</span>
+                        </div>
+                      </div>
+
+                      <div class="flex items-center gap-1.5">
+                        <button type="button" id="btn-protocol-prev" class="btn-secondary px-3 min-h-[42px]" aria-label="Previous protocol site">
+                          <i data-lucide="chevron-left" class="w-4 h-4"></i>
+                        </button>
+                        <button type="button" id="btn-protocol-next" class="btn-secondary px-3 min-h-[42px]" aria-label="Next protocol site">
+                          <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Step 3: Placement Instructions Card -->
+                  <div class="glass-card-elevated p-6 space-y-5">
+                    <div class="flex items-start justify-between gap-3 border-b hairline-border pb-4">
+                      <div>
+                        <span class="type-12 font-semibold uppercase tracking-wider text-primary-700 dark:text-primary-400 block">
+                          Step 3 — Placement Instructions
+                        </span>
+                        <h3 id="instruction-site-title" class="type-24 font-semibold text-slate-900 dark:text-slate-50 mt-1">
+                          Cranial Dorsal (L)
+                        </h3>
+                        <p id="instruction-site-meta" class="type-14 text-slate-500 dark:text-slate-400 mt-0.5">
+                          Dog · Lungs · Left Side · Rib 3–5
+                        </p>
+                      </div>
+                      <div class="w-12 h-12 rounded-2xl bg-primary-600/15 text-primary-600 dark:text-primary-400 flex items-center justify-center shrink-0">
+                        <i data-lucide="crosshair" class="w-6 h-6"></i>
+                      </div>
+                    </div>
+
+                    <!-- Precise Species-Specific Landmark Instruction Box -->
+                    <div class="p-4 rounded-xl bg-primary-500/10 border border-primary-500/25 space-y-1.5">
+                      <span class="type-12 font-semibold text-primary-800 dark:text-primary-300 block">Anatomical Landmark</span>
+                      <p id="instruction-text-body" class="type-16 font-medium text-slate-900 dark:text-slate-100">
+                        Left side, 3rd-5th intercostal space, dorsal half of the thorax.
+                      </p>
+                    </div>
+
+                    <!-- Technique Tips List -->
+                    <div class="space-y-2.5">
+                      <span class="type-12 font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 block">
+                        Clinical Auscultation Technique Tips
+                      </span>
+                      <ul id="instruction-tips-list" class="space-y-2 type-14 text-slate-700 dark:text-slate-300"></ul>
+                    </div>
+
+                    <!-- File Naming Preview -->
+                    <div class="pt-3 border-t hairline-border flex items-center justify-between gap-2 type-12 text-slate-500 dark:text-slate-400">
+                      <span>WAV export pattern:</span>
+                      <code id="preview-wav-filename" class="font-mono text-slate-700 dark:text-slate-300 truncate max-w-[240px]">
+                        Dog_Lungs_Left_dog_lung_left_cranial_dorsal_Barnaby_004.wav
+                      </code>
+                    </div>
+
+                    <!-- Primary Action: Start Recording at This Site -->
+                    <button type="button" id="btn-proceed-to-recording" class="btn-primary w-full min-h-[54px] type-16 font-semibold">
+                      <i data-lucide="mic" class="w-5 h-5"></i>
+                      <span>Start recording at this site</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- =============================================================== -->
+          <!-- ACOUSTIC RECORDING, LIVE SIGNAL QUALITY & SPECTROGRAM STUDIO    -->
+          <!-- =============================================================== -->
+          <div id="recording-studio-card" class="glass-card-elevated p-6 sm:p-8 space-y-6 scroll-mt-24">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b hairline-border pb-5">
+              <div>
+                <div class="flex items-center gap-2">
+                  <span class="type-12 font-semibold uppercase tracking-wider text-primary-700 dark:text-primary-400">Acoustic Signal Capture</span>
+                  <span id="recording-mime-badge" class="type-12 text-slate-500 dark:text-slate-400 tabular-nums">· 16-bit PCM WAV Export</span>
+                </div>
+                <h3 id="recording-context-heading" class="type-24 font-semibold text-slate-900 dark:text-slate-100 mt-0.5">
+                  Dog · Lungs · Left Side — Cranial Dorsal (L)
+                </h3>
+                <p id="recording-context-landmark" class="type-14 text-slate-500 dark:text-slate-400">
+                  Left side, 3rd-5th intercostal space, dorsal half of the thorax.
+                </p>
+              </div>
+
+              <!-- 10-Second Recommended Minimum Duration Progress Ring (Section C Item 16) -->
+              <div class="flex items-center gap-3 px-4 py-2.5 rounded-2xl bg-slate-200/60 dark:bg-slate-800/70 border hairline-border shrink-0">
+                <div class="relative w-12 h-12 flex items-center justify-center">
+                  <svg class="w-12 h-12 -rotate-90" viewBox="0 0 48 48">
+                    <circle cx="24" cy="24" r="19" stroke="currentColor" stroke-width="4" fill="none" class="text-slate-300 dark:text-slate-700" />
+                    <circle
+                      id="min-duration-ring"
+                      cx="24"
+                      cy="24"
+                      r="19"
+                      stroke="#0D9488"
+                      stroke-width="4"
+                      stroke-linecap="round"
+                      fill="none"
+                      stroke-dasharray="119.38"
+                      stroke-dashoffset="119.38"
+                    />
+                  </svg>
+                  <span id="min-duration-ring-label" class="absolute type-12 font-semibold tabular-nums text-slate-800 dark:text-slate-200">0s</span>
+                </div>
+                <div>
+                  <span id="min-duration-status" class="block type-14 font-medium text-slate-900 dark:text-slate-100">Target: 10s+ capture</span>
+                  <span class="block type-12 text-slate-500 dark:text-slate-400">Recommended clinical window</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Live Signal-Quality Indicator Bar (Section C Item 16: Too quiet / Good / Clipping + Noisy Environment Warning) -->
+            <div class="flex flex-wrap items-center justify-between gap-4">
+              <div class="flex flex-wrap items-center gap-2" role="status" aria-live="polite">
+                <span class="type-12 font-medium text-slate-500 dark:text-slate-400 mr-1">Signal Quality:</span>
+                <span id="sig-chip-quiet" class="px-3.5 py-1.5 rounded-full type-12 font-medium border hairline-border bg-slate-200/50 dark:bg-slate-800/60 text-slate-500 dark:text-slate-400 transition-all">
+                  Too quiet
+                </span>
+                <span id="sig-chip-good" class="px-3.5 py-1.5 rounded-full type-12 font-medium border hairline-border bg-slate-200/50 dark:bg-slate-800/60 text-slate-500 dark:text-slate-400 transition-all">
+                  Good
+                </span>
+                <span id="sig-chip-clipping" class="px-3.5 py-1.5 rounded-full type-12 font-medium border hairline-border bg-slate-200/50 dark:bg-slate-800/60 text-slate-500 dark:text-slate-400 transition-all">
+                  Clipping
+                </span>
+              </div>
+
+              <!-- Noisy Environment Warning Badge -->
+              <div id="noisy-env-warning" class="hidden items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/15 border border-amber-500/35 text-amber-700 dark:text-amber-300 type-12 font-medium">
+                <i data-lucide="volume-2" class="w-4 h-4"></i>
+                <span>High ambient noise floor — check stethoscope seal</span>
+              </div>
+            </div>
+
+            <!-- Live Mirrored Audio Visualizer Canvas + Timer Readout -->
+            <div class="relative rounded-2xl bg-slate-900 dark:bg-slate-950 border border-slate-800 p-4 sm:p-6 overflow-hidden">
+              <div class="flex items-center justify-between mb-3">
+                <div class="flex items-center gap-2.5">
+                  <span id="rec-live-indicator" class="w-2.5 h-2.5 rounded-full bg-slate-500"></span>
+                  <span id="rec-state-label" class="type-12 font-medium text-slate-300 uppercase tracking-wider">Ready to Capture</span>
+                </div>
+                <div class="type-32 font-semibold text-slate-50 tabular-nums tracking-tight" id="recording-timer">00:00.0</div>
+              </div>
+
+              <!-- Web Audio API AnalyserNode Mirrored Bars Canvas -->
+              <canvas id="live-visualizer-canvas" width="920" height="180" class="w-full h-40 sm:h-44 rounded-xl bg-slate-950/70 block"></canvas>
+
+              <!-- Center Controls: Large Pulsing Red Start/Stop Button -->
+              <div class="mt-6 flex flex-col items-center justify-center gap-3">
+                <button
+                  type="button"
+                  id="btn-record-toggle"
+                  class="relative w-20 h-20 rounded-full bg-red-600 hover:bg-red-500 active:scale-95 text-white flex items-center justify-center shadow-xl shadow-red-600/30 transition-all cursor-pointer focus:outline-none"
+                  aria-label="Start or Stop Auscultation Recording"
+                >
+                  <i id="record-btn-icon" data-lucide="mic" class="w-8 h-8"></i>
+                </button>
+                <span id="record-btn-caption" class="type-14 font-medium text-slate-300">Tap to start auscultation capture</span>
+              </div>
+            </div>
+
+            <!-- ============================================================= -->
+            <!-- POST-STOPPING PANEL: WAV EXPORT, PLAYER, REAL SPECTROGRAM     -->
+            <!-- ============================================================= -->
+            <div id="post-recording-panel" class="hidden space-y-6 pt-4 border-t hairline-border">
+              <!-- WAV Export Confirmation Banner -->
+              <div class="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/25 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div class="flex items-start gap-3">
+                  <div class="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center shrink-0 mt-0.5">
+                    <i data-lucide="check-check" class="w-5 h-5"></i>
+                  </div>
+                  <div>
+                    <span class="type-14 font-semibold text-slate-900 dark:text-slate-100 block">
+                      16-bit PCM Mono WAV Encoded &amp; Downloaded
+                    </span>
+                    <code id="exported-wav-filename" class="type-12 font-mono text-emerald-800 dark:text-emerald-300 break-all">
+                      Dog_Lungs_Left_dog_lung_left_cranial_dorsal_Barnaby_004.wav
+                    </code>
+                  </div>
+                </div>
+                <button type="button" id="btn-redownload-wav" class="btn-secondary type-14 shrink-0">
+                  <i data-lucide="download" class="w-4 h-4"></i>
+                  <span>Download WAV Again</span>
+                </button>
+              </div>
+
+              <!-- Real Computed FFT Spectrogram Canvas with Playback Cursor (Section C Item 15) -->
+              <div class="glass-card p-5 space-y-3">
+                <div class="flex flex-wrap items-center justify-between gap-2">
+                  <div>
+                    <h4 class="type-16 font-semibold text-slate-900 dark:text-slate-100">Computed FFT Acoustic Spectrogram (0 – 2000 Hz)</h4>
+                    <p class="type-12 text-slate-500 dark:text-slate-400">Real short-time Fourier transform (Teal-to-Yellow intensity scale) · Tap spectrogram to seek</p>
+                  </div>
+                  <div class="flex items-center gap-2 type-12 text-slate-500 dark:text-slate-400">
+                    <span>Low</span>
+                    <div class="w-24 h-2.5 rounded-full bg-gradient-to-r from-slate-900 via-primary-500 to-yellow-300"></div>
+                    <span>High dB</span>
+                  </div>
+                </div>
+
+                <div class="relative rounded-xl overflow-hidden bg-slate-950 border border-slate-800">
+                  <canvas id="recording-spectrogram-canvas" width="900" height="200" class="w-full h-44 sm:h-48 block cursor-pointer"></canvas>
+                  <!-- Moving Playback Cursor Line -->
+                  <div id="recording-spectrogram-cursor" class="pointer-events-none absolute top-0 bottom-0 left-0 w-0.5 bg-amber-300 shadow-[0_0_8px_#FCD34D]"></div>
+                </div>
+
+                <!-- Custom Clinical Audio Player Bar -->
+                <div class="flex flex-wrap items-center gap-4 pt-2">
+                  <button type="button" id="btn-play-recorded-audio" class="btn-secondary min-h-[48px] px-5">
+                    <i id="play-recorded-icon" data-lucide="play" class="w-4 h-4"></i>
+                    <span id="play-recorded-label">Play Recording</span>
+                  </button>
+                  <div class="flex-1 min-w-[180px] flex items-center gap-3">
+                    <span id="player-current-time" class="type-12 font-mono tabular-nums text-slate-600 dark:text-slate-300">00:00.0</span>
+                    <input
+                      id="player-seek-slider"
+                      type="range"
+                      min="0"
+                      max="100"
+                      value="0"
+                      step="0.1"
+                      class="flex-1 accent-primary-600 h-2 rounded-lg cursor-pointer"
+                      aria-label="Audio playback timeline"
+                    />
+                    <span id="player-total-time" class="type-12 font-mono tabular-nums text-slate-500 dark:text-slate-400">00:00.0</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Primary Action Bar: Run AI Analysis (Demo) or Next Site in Protocol -->
+              <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
+                <button type="button" id="btn-protocol-advance-after-rec" class="hidden btn-secondary min-h-[54px] px-6 type-16">
+                  <i data-lucide="check-circle-2" class="w-5 h-5 text-emerald-600"></i>
+                  <span>Save Site &amp; Advance to Next Protocol Site</span>
+                </button>
+
+                <button type="button" id="btn-run-ai-analysis" class="btn-primary flex-1 min-h-[56px] type-16 font-semibold">
+                  <i data-lucide="sparkles" class="w-5 h-5"></i>
+                  <span>Run AI Analysis (Demo)</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================================================================= -->
+        <!-- VIEW 3: RESULTS (3s Scanning Loader + Species-Aware Diagnosis)    -->
+        <!-- ================================================================= -->
+        <section id="view-results" class="spa-view space-y-6" aria-label="AI Acoustic Analysis Results">
+          <!-- 3-Second Loading State with Animated Scanning Effect (Section A Item 8) -->
+          <div id="results-loading-state" class="hidden glass-card-elevated p-8 sm:p-12 text-center space-y-6">
+            <div class="w-16 h-16 rounded-2xl bg-primary-500/15 text-primary-600 dark:text-primary-400 flex items-center justify-center mx-auto">
+              <i data-lucide="cpu" class="w-8 h-8 animate-spin"></i>
+            </div>
+            <div class="space-y-2 max-w-md mx-auto">
+              <h2 class="type-24 font-semibold text-slate-900 dark:text-slate-100">Running acoustic model...</h2>
+              <p id="results-loading-subtitle" class="type-14 text-slate-500 dark:text-slate-400">
+                Evaluating spectral envelope, intercostal site attenuation, and species-specific acoustic signatures...
+              </p>
+            </div>
+
+            <!-- Animated Scanning Effect Bar -->
+            <div class="max-w-lg mx-auto h-28 rounded-2xl bg-slate-950 border border-slate-800 relative overflow-hidden p-4 flex flex-col justify-between">
+              <div class="flex justify-between type-12 font-mono text-primary-400/80">
+                <span>STFT WINDOW: 512 PT HANN</span>
+                <span class="tabular-nums">BAND: 20Hz – 2000Hz</span>
+              </div>
+              <div class="grid grid-cols-12 gap-1.5 items-end h-12">
+                <div class="bg-primary-500/40 h-5 rounded"></div>
+                <div class="bg-primary-500/60 h-9 rounded"></div>
+                <div class="bg-primary-400/80 h-12 rounded"></div>
+                <div class="bg-yellow-400/80 h-10 rounded"></div>
+                <div class="bg-primary-500/50 h-7 rounded"></div>
+                <div class="bg-primary-500/70 h-11 rounded"></div>
+                <div class="bg-yellow-300/90 h-12 rounded"></div>
+                <div class="bg-primary-400/60 h-8 rounded"></div>
+                <div class="bg-primary-500/40 h-6 rounded"></div>
+                <div class="bg-primary-500/75 h-10 rounded"></div>
+                <div class="bg-primary-400/50 h-7 rounded"></div>
+                <div class="bg-primary-500/30 h-4 rounded"></div>
+              </div>
+              <div class="ai-scan-bar absolute inset-y-0 w-1/3 bg-gradient-to-r from-transparent via-primary-400/35 to-transparent pointer-events-none"></div>
+            </div>
+          </div>
+
+          <!-- Results Content Card -->
+          <div id="results-content-wrapper" class="space-y-6">
+            <!-- Patient & Site Summary Header -->
+            <div class="glass-card p-5 sm:p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+              <div class="space-y-1">
+                <div class="flex flex-wrap items-center gap-2 type-12 text-slate-500 dark:text-slate-400">
+                  <span id="res-meta-species" class="font-semibold text-primary-700 dark:text-primary-400">Dog</span>
+                  <span>·</span>
+                  <span id="res-meta-target">Lungs</span>
+                  <span>·</span>
+                  <span id="res-meta-side">Left Side</span>
+                  <span>·</span>
+                  <span id="res-meta-site">Cranial Dorsal (L)</span>
+                  <span>·</span>
+                  <span id="res-meta-timestamp">Just now</span>
+                </div>
+                <h2 id="res-patient-heading" class="type-24 font-semibold text-slate-900 dark:text-slate-100">
+                  Barnaby — Acoustic Analysis Report
+                </h2>
+              </div>
+
+              <!-- Re-run / Simulate Low-Confidence Toggle for Clinical Evaluation -->
+              <div class="flex flex-wrap items-center gap-2.5">
+                <button type="button" id="btn-rerun-analysis" class="btn-secondary type-14">
+                  <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+                  <span>Re-run Demo Analysis</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Main Diagnosis & Confidence Card -->
+            <div id="res-primary-card" class="glass-card-elevated p-6 sm:p-8 space-y-6">
+              <!-- Amber Inconclusive Banner (Shown automatically when confidence < 70%) -->
+              <div id="res-inconclusive-banner" class="hidden p-5 rounded-2xl bg-amber-500/15 border border-amber-500/35 space-y-2">
+                <div class="flex items-center gap-2.5 text-amber-800 dark:text-amber-300">
+                  <i data-lucide="alert-triangle" class="w-6 h-6 shrink-0"></i>
+                  <h3 class="type-20 font-semibold">Inconclusive - rely on clinical judgment</h3>
+                </div>
+                <p class="type-14 text-slate-700 dark:text-slate-200">
+                  Model confidence is below the 70% clinical threshold (<span id="res-inconclusive-pct" class="font-semibold tabular-nums">62%</span>). Acoustic overlap or friction artifact prevents a definitive automated classification. Rely on direct physical auscultation and clinical workup below.
+                </p>
+              </div>
+
+              <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+                <!-- Predicted Sound in Large Text -->
+                <div class="lg:col-span-7 space-y-2">
+                  <div class="flex items-center gap-2.5">
+                    <span id="res-status-dot" class="w-3 h-3 rounded-full bg-amber-500"></span>
+                    <span id="res-status-label" class="type-14 font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-300">
+                      Acoustic Classification
+                    </span>
+                  </div>
+                  <div id="res-predicted-sound" class="type-32 sm:type-44 font-semibold text-slate-900 dark:text-slate-50 tracking-tight">
+                    Coarse Late-Inspiratory Crackles
+                  </div>
+                  <p id="res-clinical-summary" class="type-16 text-slate-600 dark:text-slate-300">
+                    Discontinuous, non-musical explosive adventitious sounds detected between 280 Hz and 950 Hz during late inspiration.
+                  </p>
+                </div>
+
+                <!-- Animated Confidence Meter -->
+                <div class="lg:col-span-5 p-5 rounded-2xl bg-slate-200/50 dark:bg-slate-800/60 border hairline-border space-y-3">
+                  <div class="flex items-baseline justify-between">
+                    <span class="type-14 font-medium text-slate-600 dark:text-slate-300">Acoustic Model Confidence</span>
+                    <span id="res-confidence-number" class="type-32 font-semibold tabular-nums text-primary-700 dark:text-primary-300">84%</span>
+                  </div>
+                  <div class="w-full h-3.5 rounded-full bg-slate-300/80 dark:bg-slate-700 overflow-hidden">
+                    <div
+                      id="res-confidence-bar"
+                      class="h-full rounded-full bg-primary-600 transition-all duration-700 ease-out"
+                      style="width: 0%"
+                    ></div>
+                  </div>
+                  <div class="flex items-center justify-between type-12 text-slate-500 dark:text-slate-400 tabular-nums">
+                    <span>Threshold: 70%</span>
+                    <span id="res-confidence-tier">High confidence range (70–95%)</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Spectrogram with Labeled "AI attention (Demo)" Highlight Overlay (Section C Item 15) -->
+              <div class="pt-4 border-t hairline-border space-y-3">
+                <div class="flex flex-wrap items-center justify-between gap-3">
+                  <div>
+                    <h4 class="type-16 font-semibold text-slate-900 dark:text-slate-100">
+                      Spectral Attention Map &amp; Playback
+                    </h4>
+                    <p class="type-12 text-slate-500 dark:text-slate-400">
+                      Highlighted region indicates time-frequency energy band weighted by the acoustic classifier
+                    </p>
+                  </div>
+                  <button type="button" id="btn-results-play-audio" class="btn-secondary min-h-[42px] px-4 type-14">
+                    <i id="results-play-icon" data-lucide="play" class="w-4 h-4"></i>
+                    <span id="results-play-label">Play Recording</span>
+                  </button>
+                </div>
+
+                <div class="relative rounded-2xl overflow-hidden bg-slate-950 border border-slate-800">
+                  <canvas id="results-spectrogram-canvas" width="900" height="200" class="w-full h-44 sm:h-48 block cursor-pointer"></canvas>
+
+                  <!-- Labeled "AI attention (Demo)" Highlight Box -->
+                  <div
+                    id="ai-attention-overlay"
+                    class="pointer-events-none absolute top-6 bottom-8 left-[28%] w-[36%] border-2 border-amber-400 bg-amber-400/15 rounded-xl flex flex-col justify-between p-2 shadow-[0_0_20px_rgba(251,191,36,0.25)]"
+                  >
+                    <div class="inline-flex items-center gap-1.5 self-start px-2.5 py-0.5 rounded-md bg-amber-400 text-slate-950 type-12 font-semibold">
+                      <span>AI attention (Demo)</span>
+                    </div>
+                    <span id="ai-attention-band-label" class="type-12 font-mono text-amber-200 self-end bg-slate-950/80 px-2 py-0.5 rounded">
+                      280–950 Hz · Peak Anomaly
+                    </span>
+                  </div>
+
+                  <!-- Moving Playback Cursor -->
+                  <div id="results-spectrogram-cursor" class="pointer-events-none absolute top-0 bottom-0 left-0 w-0.5 bg-primary-300 shadow-[0_0_8px_#5EEAD4]"></div>
+                </div>
+              </div>
+
+              <!-- Two-Column Clinical Support: Ranked Differential Diagnoses & Recommended Tests -->
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t hairline-border">
+                <!-- Ranked Differential Diagnoses -->
+                <div class="space-y-3">
+                  <div class="flex items-center gap-2">
+                    <i data-lucide="git-branch" class="w-5 h-5 text-primary-600 dark:text-primary-400"></i>
+                    <h4 class="type-20 font-semibold text-slate-900 dark:text-slate-100">Ranked Differential Diagnoses</h4>
+                  </div>
+                  <div id="res-differentials-list" class="space-y-3"></div>
+                </div>
+
+                <!-- 2-3 Recommended Diagnostic Tests -->
+                <div class="space-y-3">
+                  <div class="flex items-center gap-2">
+                    <i data-lucide="clipboard-check" class="w-5 h-5 text-primary-600 dark:text-primary-400"></i>
+                    <h4 class="type-20 font-semibold text-slate-900 dark:text-slate-100">Recommended Next Tests</h4>
+                  </div>
+                  <div id="res-tests-list" class="space-y-3"></div>
+                </div>
+              </div>
+
+              <!-- Mandatory Clinical Disclaimer Footer (Section A Item 8) -->
+              <div class="p-4 rounded-xl bg-slate-200/70 dark:bg-slate-800/80 border hairline-border flex items-center justify-between gap-4">
+                <p class="type-14 font-medium text-slate-700 dark:text-slate-300">
+                  AI-assisted tool. Complements, never replaces, veterinary judgment. Demo data.
+                </p>
+                <span class="type-12 text-slate-500 dark:text-slate-400 shrink-0">Phase 1 Clinical Preview</span>
+              </div>
+
+              <!-- Save Visit & Back to Dashboard Buttons -->
+              <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-end gap-3 pt-2">
+                <button type="button" id="btn-results-back-dashboard" class="btn-secondary min-h-[52px] px-6 type-16">
+                  <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+                  <span>Back to Dashboard</span>
+                </button>
+                <button type="button" id="btn-results-save-visit" class="btn-primary min-h-[52px] px-7 type-16 font-semibold">
+                  <i data-lucide="bookmark-check" class="w-5 h-5"></i>
+                  <span>Save Visit</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================================================================= -->
+        <!-- VIEW 4: VISIT HISTORY                                             -->
+        <!-- ================================================================= -->
+        <section id="view-history" class="spa-view space-y-6" aria-label="Clinical Visit History">
+          <div class="glass-card p-5 sm:p-6 space-y-4">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <div>
+                <h2 class="type-24 font-semibold text-slate-900 dark:text-slate-100">Clinical Auscultation Log</h2>
+                <p class="type-14 text-slate-500 dark:text-slate-400">All recorded visits persisted via DataService</p>
+              </div>
+              <div class="flex items-center gap-2.5">
+                <button type="button" id="btn-export-history-csv" class="btn-secondary type-14">
+                  <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
+                  <span>Export Dataset CSV</span>
+                </button>
+                <button type="button" data-nav="new-visit" class="btn-primary type-14">
+                  <i data-lucide="plus" class="w-4 h-4"></i>
+                  <span>New Visit</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Search & Species Filter Controls -->
+            <div class="flex flex-col md:flex-row gap-3 pt-2">
+              <div class="relative flex-1">
+                <input
+                  id="history-search-input"
+                  type="search"
+                  placeholder="Search by patient name, breed, site, sound, or Case ID..."
+                  class="clinical-input pl-4"
+                />
+              </div>
+              <div class="segmented-control overflow-x-auto" id="history-species-filter" role="group" aria-label="Filter visits by species">
+                <button type="button" class="segmented-btn active" data-filter-species="All">All Species</button>
+                <button type="button" class="segmented-btn" data-filter-species="Dog">Dog</button>
+                <button type="button" class="segmented-btn" data-filter-species="Cat">Cat</button>
+                <button type="button" class="segmented-btn" data-filter-species="Horse">Horse</button>
+                <button type="button" class="segmented-btn" data-filter-species="Cattle">Cattle</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- History List Container -->
+          <div id="history-visits-container" class="space-y-3"></div>
+        </section>
+      </main>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- PORTRAIT BOTTOM TAB BAR NAVIGATION (< 1024px)                         -->
+    <!-- ===================================================================== -->
+    <nav class="lg:hidden fixed bottom-0 inset-x-0 z-30 glass-nav border-t hairline-border pb-safe select-none" aria-label="Bottom Tab Navigation">
+      <div class="grid grid-cols-4 h-16 max-w-lg mx-auto px-2">
+        <button type="button" data-nav="dashboard" class="mobile-nav-item flex flex-col items-center justify-center gap-1 touch-target">
+          <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+          <span class="type-12 font-medium">Dashboard</span>
+        </button>
+        <button type="button" data-nav="new-visit" class="mobile-nav-item flex flex-col items-center justify-center gap-1 touch-target">
+          <i data-lucide="activity" class="w-5 h-5"></i>
+          <span class="type-12 font-medium">New Visit</span>
+        </button>
+        <button type="button" data-nav="results" class="mobile-nav-item flex flex-col items-center justify-center gap-1 touch-target">
+          <i data-lucide="sparkles" class="w-5 h-5"></i>
+          <span class="type-12 font-medium">Results</span>
+        </button>
+        <button type="button" data-nav="history" class="mobile-nav-item flex flex-col items-center justify-center gap-1 touch-target">
+          <i data-lucide="folder-heart" class="w-5 h-5"></i>
+          <span class="type-12 font-medium">History</span>
+        </button>
+      </div>
+    </nav>
+
+    <!-- ===================================================================== -->
+    <!-- SETTINGS MODAL / BOTTOM SHEET (Collection Mode, Theme, Audio Config)  -->
+    <!-- ===================================================================== -->
+    <div id="settings-modal-backdrop" class="hidden fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4">
+      <div class="glass-card-elevated w-full sm:max-w-lg rounded-t-3xl sm:rounded-3xl p-6 sm:p-7 space-y-6 max-h-[90dvh] overflow-y-auto">
+        <!-- Drag Handle for iPad/Mobile Sheet -->
+        <div class="w-10 h-1.5 bg-slate-300 dark:bg-slate-700 rounded-full mx-auto sm:hidden"></div>
+
+        <div class="flex items-center justify-between border-b hairline-border pb-4">
+          <div>
+            <h3 class="type-20 font-semibold text-slate-900 dark:text-slate-100">Clinical Workstation Settings</h3>
+            <p class="type-12 text-slate-500 dark:text-slate-400">Configure dataset labeling, appearance, and WAV export index</p>
+          </div>
+          <button type="button" id="btn-close-settings" class="btn-ghost touch-target px-3" aria-label="Close Settings">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+
+        <!-- Setting 1: Dataset Collection Mode Toggle (Section C Item 17) -->
+        <div class="p-4 rounded-2xl bg-primary-500/10 border border-primary-500/25 space-y-3">
+          <div class="flex items-center justify-between gap-4">
+            <div>
+              <span class="type-16 font-semibold text-slate-900 dark:text-slate-100 block">Clinic Dataset Collection Mode</span>
+              <span class="type-12 text-slate-600 dark:text-slate-300 block mt-0.5">
+                Adds a ground-truth Finding dropdown (Normal, Wheezes, Crackles, Stridor, Purring, Panting, Hair rub) and Case ID field to New Visit, appending both to exported WAV filenames.
+              </span>
+            </div>
+            <button
+              type="button"
+              id="toggle-collection-mode"
+              role="switch"
+              aria-checked="false"
+              class="toggle-switch"
+              aria-label="Toggle Dataset Collection Mode"
+            >
+              <span class="toggle-thumb"></span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Setting 2: Appearance / Theme Mode -->
+        <div class="space-y-2.5">
+          <label class="block type-14 font-semibold text-slate-800 dark:text-slate-200">Display Appearance</label>
+          <div class="segmented-control w-full grid grid-cols-3" id="settings-theme-selector">
+            <button type="button" class="segmented-btn" data-theme-pref="system">System Default</button>
+            <button type="button" class="segmented-btn" data-theme-pref="light">Light Clinical</button>
+            <button type="button" class="segmented-btn" data-theme-pref="dark">Dark Slate</button>
+          </div>
+        </div>
+
+        <!-- Setting 3: Acoustic Simulation Mode (For testing without stethoscope hardware) -->
+        <div class="flex items-center justify-between gap-4 py-2 border-t hairline-border pt-4">
+          <div>
+            <span class="type-14 font-semibold text-slate-800 dark:text-slate-200 block">Simulated Stethoscope Signal Generator</span>
+            <span class="type-12 text-slate-500 dark:text-slate-400 block">
+              Synthesizes realistic cardiopulmonary &amp; vesicular waveforms if iPad microphone permission is unavailable
+            </span>
+          </div>
+          <button
+            type="button"
+            id="toggle-sim-audio"
+            role="switch"
+            aria-checked="false"
+            class="toggle-switch"
+            aria-label="Toggle Simulated Stethoscope Signal"
+          >
+            <span class="toggle-thumb"></span>
+          </button>
+        </div>
+
+        <!-- Setting 4: Reset Demo Data & WAV Counter -->
+        <div class="flex items-center justify-between gap-4 border-t hairline-border pt-4">
+          <div>
+            <span class="type-14 font-medium text-slate-800 dark:text-slate-200 block">Reset Demo Visits &amp; File Counter</span>
+            <span class="type-12 text-slate-500 dark:text-slate-400 block">Restores the 3 seeded clinical cases</span>
+          </div>
+          <button type="button" id="btn-reset-demo-data" class="btn-secondary type-14 text-red-600 dark:text-red-400">
+            <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+            <span>Reset</span>
+          </button>
+        </div>
+
+        <div class="pt-2">
+          <button type="button" id="btn-done-settings" class="btn-primary w-full">Done</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- TOAST NOTIFICATION CONTAINER                                          -->
+    <!-- ===================================================================== -->
+    <div id="toast-container" class="fixed top-20 right-4 z-50 space-y-2.5 pointer-events-none max-w-sm w-full px-4 sm:px-0" aria-live="polite"></div>
+
+    <!-- Plain Vanilla JS Application Files (No bundler required) -->
+    <script src="anatomy.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

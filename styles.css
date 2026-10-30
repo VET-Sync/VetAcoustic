@@ -1,0 +1,504 @@
+/* VetAcoustics Clinical Design System - iPad Safari Optimized */
+
+:root {
+  /* Light Theme Tokens (Clinical Slate & Medical Teal - No Pure White Canvas) */
+  --bg-canvas: #F3F6F9;
+  --surface: rgba(250, 252, 254, 0.72);
+  --surface-solid: #FAFCFE;
+  --surface-elevated: rgba(253, 254, 255, 0.88);
+  --surface-muted: rgba(226, 232, 240, 0.55);
+  --border-hairline: rgba(15, 23, 42, 0.08);
+  --border-strong: rgba(15, 23, 42, 0.14);
+  --text-primary: #0F172A;
+  --text-secondary: #334155;
+  --text-muted: #64748B;
+  --primary-50: #F0FDFA;
+  --primary-100: #CCFBF1;
+  --primary-500: #14B8A6;
+  --primary-600: #4F5BF5;
+  --primary-700: #3E47D6;
+  --primary-glow: rgba(79, 91, 245, 0.22);
+  --success: #059669;
+  --success-bg: rgba(5, 150, 105, 0.12);
+  --warning: #D97706;
+  --warning-bg: rgba(217, 119, 6, 0.14);
+  --danger: #DC2626;
+  --danger-bg: rgba(220, 38, 38, 0.12);
+  --shadow-card: 0 2px 6px -1px rgba(15, 23, 42, 0.04), 0 12px 28px -6px rgba(15, 23, 42, 0.06);
+  --shadow-elevated: 0 4px 12px -2px rgba(15, 23, 42, 0.06), 0 20px 40px -8px rgba(15, 23, 42, 0.10);
+  --mesh-1: rgba(79, 91, 245, 0.07);
+  --mesh-2: rgba(56, 189, 248, 0.05);
+  --mesh-3: rgba(99, 102, 241, 0.03);
+}
+
+html.dark {
+  /* Dark Theme Tokens (Deep Clinical Slate - No Pure Black) */
+  --bg-canvas: #0B111D;
+  --surface: rgba(17, 25, 39, 0.68);
+  --surface-solid: #111927;
+  --surface-elevated: rgba(26, 36, 54, 0.82);
+  --surface-muted: rgba(30, 41, 59, 0.65);
+  --border-hairline: rgba(241, 245, 249, 0.08);
+  --border-strong: rgba(241, 245, 249, 0.15);
+  --text-primary: #F1F5F9;
+  --text-secondary: #CBD5E1;
+  --text-muted: #94A3B8;
+  --primary-50: rgba(79, 91, 245, 0.12);
+  --primary-100: rgba(98, 112, 255, 0.22);
+  --primary-500: #2DD4BF;
+  --primary-600: #4F5BF5;
+  --primary-700: #14B8A6;
+  --primary-glow: rgba(98, 112, 255, 0.28);
+  --success: #34D399;
+  --success-bg: rgba(16, 185, 129, 0.16);
+  --warning: #FBBF24;
+  --warning-bg: rgba(245, 158, 11, 0.18);
+  --danger: #F87171;
+  --danger-bg: rgba(239, 68, 68, 0.18);
+  --shadow-card: 0 2px 8px -1px rgba(2, 6, 23, 0.35), 0 14px 30px -6px rgba(2, 6, 23, 0.45);
+  --shadow-elevated: 0 8px 20px -4px rgba(2, 6, 23, 0.5), 0 24px 48px -10px rgba(2, 6, 23, 0.6);
+  --mesh-1: rgba(79, 91, 245, 0.11);
+  --mesh-2: rgba(14, 165, 233, 0.07);
+  --mesh-3: rgba(15, 23, 42, 0.4);
+}
+
+/* Base & Safe Area Setup */
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: var(--bg-canvas);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100dvh;
+  overflow-x: hidden;
+  transition: background-color 240ms ease-out, color 240ms ease-out;
+}
+
+/* Subtle Low-Contrast Clinical Gradient Mesh Background */
+.clinical-mesh-bg {
+  background-color: var(--bg-canvas);
+  background-image:
+    radial-gradient(at 12% 10%, var(--mesh-1) 0px, transparent 52%),
+    radial-gradient(at 88% 16%, var(--mesh-2) 0px, transparent 48%),
+    radial-gradient(at 52% 88%, var(--mesh-1) 0px, transparent 58%);
+  background-attachment: fixed;
+}
+
+/* Typographic Scale: 12 / 14 / 16 / 20 / 24 / 32 / 44 */
+.type-12 { font-size: 0.75rem; line-height: 1.125rem; }
+.type-14 { font-size: 0.875rem; line-height: 1.25rem; }
+.type-16 { font-size: 1rem; line-height: 1.5rem; }
+.type-20 { font-size: 1.25rem; line-height: 1.75rem; letter-spacing: -0.015em; }
+.type-24 { font-size: 1.5rem; line-height: 2rem; letter-spacing: -0.02em; }
+.type-32 { font-size: 2rem; line-height: 2.375rem; letter-spacing: -0.025em; }
+.type-44 { font-size: 2.75rem; line-height: 3.125rem; letter-spacing: -0.03em; }
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Glassmorphism Surfaces */
+.glass-card {
+  background: var(--surface);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  border: 1px solid var(--border-hairline);
+  border-radius: 18px;
+  box-shadow: var(--shadow-card);
+  transition: transform 220ms ease-out, box-shadow 220ms ease-out, border-color 220ms ease-out, background-color 220ms ease-out;
+}
+
+.glass-card-elevated {
+  background: var(--surface-elevated);
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  border: 1px solid var(--border-strong);
+  border-radius: 20px;
+  box-shadow: var(--shadow-elevated);
+}
+
+.glass-nav {
+  background: var(--surface-elevated);
+  backdrop-filter: blur(18px) saturate(150%);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+  border-color: var(--border-hairline);
+}
+
+/* Hairline Borders */
+.hairline-border {
+  border-color: var(--border-hairline);
+}
+
+/* Touch Target & Interactive Controls (iPad-First >= 48px) */
+.touch-target {
+  min-height: 48px;
+  min-width: 48px;
+}
+
+.btn-primary {
+  min-height: 48px;
+  padding: 0 20px;
+  border-radius: 12px;
+  background-color: #4F5BF5;
+  color: #F8FAFC;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 2px 6px rgba(79, 91, 245, 0.25), 0 8px 18px -4px rgba(79, 91, 245, 0.3);
+  transition: transform 180ms cubic-bezier(0.16, 1, 0.3, 1), background-color 180ms ease-out, box-shadow 180ms ease-out;
+  cursor: pointer;
+  user-select: none;
+}
+
+.btn-primary:hover {
+  background-color: #3E47D6;
+}
+
+.btn-primary:active {
+  transform: scale(0.97);
+}
+
+.btn-secondary {
+  min-height: 48px;
+  padding: 0 18px;
+  border-radius: 12px;
+  background: var(--surface-elevated);
+  color: var(--text-primary);
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid var(--border-strong);
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+  transition: transform 180ms cubic-bezier(0.16, 1, 0.3, 1), background-color 180ms ease-out, border-color 180ms ease-out;
+  cursor: pointer;
+  user-select: none;
+}
+
+.btn-secondary:hover {
+  border-color: var(--primary-600);
+}
+
+.btn-secondary:active {
+  transform: scale(0.97);
+}
+
+.btn-ghost {
+  min-height: 48px;
+  padding: 0 14px;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--text-secondary);
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid transparent;
+  transition: transform 180ms cubic-bezier(0.16, 1, 0.3, 1), background-color 180ms ease-out, color 180ms ease-out;
+  cursor: pointer;
+  user-select: none;
+}
+
+.btn-ghost:hover {
+  background: var(--surface-muted);
+  color: var(--text-primary);
+}
+
+.btn-ghost:active {
+  transform: scale(0.97);
+}
+
+/* Segmented Control */
+.segmented-control {
+  display: inline-flex;
+  padding: 4px;
+  border-radius: 12px;
+  background: var(--surface-muted);
+  border: 1px solid var(--border-hairline);
+  gap: 4px;
+}
+
+.segmented-btn {
+  min-height: 40px;
+  padding: 0 16px;
+  border-radius: 9px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all 180ms ease-out;
+  white-space: nowrap;
+}
+
+.segmented-btn.active {
+  background: var(--surface-solid);
+  color: var(--text-primary);
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08), 0 4px 10px rgba(15, 23, 42, 0.05);
+}
+
+/* Interactive Chips (999px radius) */
+.chip-btn {
+  min-height: 48px;
+  padding: 0 18px;
+  border-radius: 999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  background: var(--surface);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-strong);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 200ms cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+  white-space: nowrap;
+}
+
+.chip-btn:hover {
+  border-color: var(--primary-600);
+  color: var(--text-primary);
+}
+
+.chip-btn:active {
+  transform: scale(0.96);
+}
+
+.chip-btn.active {
+  background: #4F5BF5;
+  color: #F8FAFC;
+  border-color: #4F5BF5;
+  box-shadow: 0 4px 14px rgba(79, 91, 245, 0.32);
+}
+
+/* Form Controls */
+.clinical-input {
+  min-height: 48px;
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: var(--surface-solid);
+  color: var(--text-primary);
+  border: 1px solid var(--border-strong);
+  font-size: 1rem;
+  transition: border-color 180ms ease-out, box-shadow 180ms ease-out;
+}
+
+.clinical-input:focus {
+  outline: none;
+  border-color: #4F5BF5;
+  box-shadow: 0 0 0 3px var(--primary-glow);
+}
+
+/* Accessible Focus Rings */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid #4F5BF5;
+  outline-offset: 2px;
+}
+
+/* SPA View Transitions (240ms ease-out fade + 8px translateY) */
+.spa-view {
+  display: none;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 240ms ease-out, transform 240ms ease-out;
+}
+
+.spa-view.view-visible {
+  display: block;
+}
+
+.spa-view.view-active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Staggered List Entrance */
+@keyframes fadeSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.stagger-item {
+  animation: fadeSlideUp 260ms ease-out both;
+}
+
+/* Recording Pulsing Button & Rings */
+@keyframes recordPulseRing {
+  0% {
+    transform: scale(1);
+    opacity: 0.65;
+  }
+  75% {
+    transform: scale(1.38);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.42);
+    opacity: 0;
+  }
+}
+
+.recording-pulse-active::before,
+.recording-pulse-active::after {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 9999px;
+  border: 2px solid #FF5A6E;
+  animation: recordPulseRing 1.8s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  pointer-events: none;
+}
+
+.recording-pulse-active::after {
+  animation-delay: 0.7s;
+}
+
+/* Stethoscope Marker & Region Glow in SVG */
+@keyframes tealRegionPulse {
+  0%, 100% {
+    fill-opacity: 0.14;
+    stroke-opacity: 0.55;
+  }
+  50% {
+    fill-opacity: 0.28;
+    stroke-opacity: 0.9;
+  }
+}
+
+.anatomy-region-glow {
+  animation: tealRegionPulse 2.4s ease-in-out infinite;
+}
+
+@keyframes markerPing {
+  0% {
+    r: 14;
+    opacity: 0.75;
+  }
+  100% {
+    r: 28;
+    opacity: 0;
+  }
+}
+
+.marker-pulse-ring {
+  animation: markerPing 1.9s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+/* AI Analysis Scanning Effect */
+@keyframes acousticScanBeam {
+  0% {
+    transform: translateX(-100%);
+  }
+  50% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.ai-scan-bar {
+  animation: acousticScanBeam 2.2s ease-in-out infinite;
+}
+
+/* Skeleton Shimmer */
+@keyframes skeletonShimmer {
+  0% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 0.85;
+  }
+  100% {
+    opacity: 0.45;
+  }
+}
+
+.skeleton-box {
+  background: var(--surface-muted);
+  border-radius: 10px;
+  animation: skeletonShimmer 1.5s ease-in-out infinite;
+}
+
+/* Toggle Switch */
+.toggle-switch {
+  position: relative;
+  width: 52px;
+  height: 30px;
+  border-radius: 999px;
+  background: var(--surface-muted);
+  border: 1px solid var(--border-strong);
+  cursor: pointer;
+  transition: background-color 200ms ease-out, border-color 200ms ease-out;
+  flex-shrink: 0;
+}
+
+.toggle-switch[aria-checked="true"] {
+  background-color: #4F5BF5;
+  border-color: #4F5BF5;
+}
+
+.toggle-thumb {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #F8FAFC;
+  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.25);
+  transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.toggle-switch[aria-checked="true"] .toggle-thumb {
+  transform: translateX(22px);
+}
+
+/* Safe Area Padding Utilities for iPad Safari */
+.pb-safe {
+  padding-bottom: max(12px, env(safe-area-inset-bottom));
+}
+
+.pt-safe {
+  padding-top: max(12px, env(safe-area-inset-top));
+}
+
+/* Respect Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

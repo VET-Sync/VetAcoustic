@@ -1,0 +1,44 @@
+/* VetAcoustics "Sonar" theme (loads after styles.css).
+   Colour roles: indigo = interface + actions, aqua = live audio signal, coral = recording/peaks. */
+:root{
+  --bg-canvas:#F4F5FC;--surface:rgba(255,255,255,.74);--surface-solid:#FFFFFF;--surface-elevated:rgba(255,255,255,.9);--surface-muted:rgba(79,91,245,.07);
+  --border-hairline:rgba(30,35,90,.09);--border-strong:rgba(30,35,90,.16);
+  --text-primary:#0E1230;--text-secondary:#363C66;--text-muted:#6A7099;
+  --primary-50:#EEF0FF;--primary-100:#E0E4FF;--primary-500:#6270FF;--primary-600:#4F5BF5;--primary-700:#3E47D6;--primary-glow:rgba(79,91,245,.24);
+  --signal:#12C9AE;--pulse:#FF5A6E;
+  --mesh-1:rgba(79,91,245,.13);--mesh-2:rgba(45,226,200,.09);--mesh-3:rgba(255,90,110,.05);
+  --shadow-card:0 1px 2px rgba(30,35,90,.05),0 14px 32px -10px rgba(40,50,160,.14);
+  --shadow-elevated:0 2px 6px rgba(30,35,90,.06),0 28px 56px -14px rgba(40,50,160,.22);
+}
+html.dark{
+  --bg-canvas:#070A18;--surface:rgba(18,23,48,.62);--surface-solid:#0F1430;--surface-elevated:rgba(24,31,64,.78);--surface-muted:rgba(120,135,255,.10);
+  --border-hairline:rgba(190,198,255,.09);--border-strong:rgba(190,198,255,.18);
+  --text-primary:#F0F2FF;--text-secondary:#C4C9EE;--text-muted:#8F96C4;
+  --primary-50:rgba(98,112,255,.14);--primary-100:rgba(98,112,255,.26);--primary-500:#8B96FF;--primary-600:#5B67FF;--primary-700:#8B96FF;--primary-glow:rgba(98,112,255,.36);
+  --signal:#2DE2C8;
+  --mesh-1:rgba(79,91,245,.28);--mesh-2:rgba(45,226,200,.10);--mesh-3:rgba(255,90,110,.07);
+  --shadow-card:0 1px 2px rgba(0,0,10,.5),0 16px 36px -10px rgba(0,0,20,.6);
+  --shadow-elevated:0 2px 8px rgba(0,0,10,.6),0 30px 60px -14px rgba(0,0,30,.7);
+}
+/* Type: Sora for headings and big numbers, Inter for the interface */
+h1,h2,h3,.type-20,.type-24,.type-32,.type-44{font-family:'Sora','Inter',system-ui,sans-serif;letter-spacing:-.03em}
+/* Primary actions get depth */
+.btn-primary{background-image:linear-gradient(135deg,#6270FF,#4F5BF5 55%,#3E47D6);border-color:rgba(255,255,255,.2)}
+.btn-primary:hover{background-image:linear-gradient(135deg,#7482FF,#5B67FF 55%,#4650E0)}
+.chip-btn.active{background-image:linear-gradient(135deg,#6270FF,#4F5BF5)}
+/* The one big moment: dashboard hero with a drifting heartbeat signal */
+.hero-signal{border:0!important;border-radius:28px!important;
+  background:radial-gradient(120% 150% at 0% 0%,#5560FF 0%,#2B2F8F 46%,#0A0E2C 100%)!important;
+  box-shadow:0 30px 70px -22px rgba(50,60,210,.6)!important}
+.hero-signal::before{content:"";position:absolute;left:0;right:0;bottom:0;height:52%;pointer-events:none;opacity:.95;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 560 120'%3E%3Cpath d='M0 60H60L72 58L84 22L96 98L108 60H150L160 56L170 38L180 76L190 60H280L340 60L352 58L364 22L376 98L388 60H430L440 56L450 38L460 76L470 60H560' fill='none' stroke='%232DE2C8' stroke-opacity='.22' stroke-width='9' stroke-linejoin='round'/%3E%3Cpath d='M0 60H60L72 58L84 22L96 98L108 60H150L160 56L170 38L180 76L190 60H280L340 60L352 58L364 22L376 98L388 60H430L440 56L450 38L460 76L470 60H560' fill='none' stroke='%232DE2C8' stroke-width='2.5' stroke-linejoin='round' stroke-linecap='round'/%3E%3C/svg%3E") repeat-x 0 50%/560px 100%;
+  -webkit-mask:linear-gradient(90deg,transparent,#000 16%,#000 84%,transparent);mask:linear-gradient(90deg,transparent,#000 16%,#000 84%,transparent);
+  animation:sonarDrift 18s linear infinite}
+@keyframes sonarDrift{to{background-position-x:-560px}}
+.hero-signal>*{position:relative;z-index:1}
+.hero-signal h2{color:#fff!important}
+.hero-signal p{color:rgba(255,255,255,.78)!important}
+.hero-signal #dashboard-date-label{color:#8FF3E3!important}
+.hero-signal .btn-primary{background:#fff;background-image:none;color:#2B2F8F;border-color:transparent;box-shadow:0 12px 28px -8px rgba(0,0,40,.5)}
+.hero-signal .btn-secondary{background:rgba(255,255,255,.12);color:#fff;border-color:rgba(255,255,255,.3)}
+.hero-signal .btn-secondary i{color:#2DE2C8!important}
