@@ -1,0 +1,10 @@
+.glass{background:rgba(255,255,255,.65);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid rgba(255,255,255,.5);box-shadow:0 8px 30px rgba(15,23,42,.08)}
+.dark .glass{background:rgba(30,41,59,.6);border-color:rgba(255,255,255,.08)}
+.view{transition:opacity .35s ease,transform .35s ease}.view.hide{opacity:0;transform:translateY(12px)}
+body{padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);-webkit-tap-highlight-color:transparent}
+button,select,input,textarea{min-height:48px}
+.rec-pulse{animation:pulse 1.4s infinite}@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(239,68,68,.6)}100%{box-shadow:0 0 0 28px rgba(239,68,68,0)}}
+.glow{animation:glow 1.6s ease-in-out infinite}@keyframes glow{50%{opacity:.25}}
+.scan{position:relative;overflow:hidden}.scan::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(20,184,166,.45),transparent);animation:sc 1.2s linear infinite}@keyframes sc{from{transform:translateX(-100%)}to{transform:translateX(100%)}}
+.chip{padding:0 18px;border-radius:999px;border:1px solid #14b8a6;color:#0f766e}.dark .chip{color:#5eead4}.chip.on{background:#0d9488;color:#fff}
+.card-pick{transition:transform .4s,opacity .4s}.card-pick.chosen{transform:scale(1.08)}.card-pick.gone{opacity:0;transform:scale(.9)}

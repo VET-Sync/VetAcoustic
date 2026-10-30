@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"><title>VetAcoustics</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#0d9488"><link rel="manifest" href="manifest.json">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config={darkMode:'class'}</script>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-gradient-to-br from-teal-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 text-slate-800 dark:text-slate-100 min-h-screen">
+<nav class="glass sticky top-0 z-20 flex items-center gap-2 px-4 py-2">
+  <b class="text-teal-600 text-lg mr-auto">🩺 VetAcoustics</b>
+  <button data-go="dash" class="px-4 rounded-xl">Dashboard</button>
+  <button data-go="visit" class="px-4 rounded-xl">New Visit</button>
+  <button data-go="history" class="px-4 rounded-xl">History</button>
+  <button id="theme" class="px-3 rounded-xl" aria-label="Theme">🌓</button>
+</nav>
+<main class="max-w-5xl mx-auto p-4">
+  <section id="dash" class="view"></section>
+  <section id="visit" class="view hidden"></section>
+  <section id="record" class="view hidden"></section>
+  <section id="results" class="view hidden"></section>
+  <section id="history" class="view hidden"></section>
+</main>
+<script src="anatomy.js"></script>
+<script src="app.js"></script>
+</body></html>
