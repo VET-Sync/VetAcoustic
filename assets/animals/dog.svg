@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" fill="none">
+  <!-- Canine Lateral Clinical Silhouette (Facing Left) -->
+  <g stroke="#4F5BF5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Main body contour -->
+    <path d="M 105 162
+             C 110 148, 128 142, 146 140
+             C 156 122, 174 108, 195 104
+             C 202 82, 224 72, 236 86
+             C 242 98, 236 124, 232 138
+             C 254 156, 274 176, 304 180
+             C 375 182, 468 180, 548 184
+             C 596 186, 642 182, 672 198
+             C 708 176, 744 148, 764 132
+             C 770 138, 756 172, 720 198
+             C 700 212, 686 226, 682 252
+             C 680 284, 662 316, 668 352
+             L 672 428
+             C 672 436, 652 438, 648 432
+             L 644 358
+             C 638 332, 634 304, 624 282
+             C 596 276, 558 264, 516 268
+             C 464 288, 412 312, 344 314
+             L 338 428
+             C 338 436, 316 438, 312 432
+             L 310 312
+             C 282 304, 258 286, 244 260
+             C 226 232, 212 208, 192 194
+             C 168 196, 142 194, 122 186
+             C 106 180, 102 170, 105 162 Z"
+          fill="#4F5BF5" fill-opacity="0.04" />
+    <!-- Ear detail -->
+    <path d="M 198 106 C 188 128, 194 156, 212 162 C 224 156, 230 132, 224 108" stroke-opacity="0.65" />
+    <!-- Eye & Nose landmark -->
+    <circle cx="164" cy="142" r="3" fill="#4F5BF5" />
+    <!-- Internal anatomical reference lines (Vertebral column, Diaphragm, Trachea) -->
+    <path d="M 222 156 C 248 182, 276 212, 318 228" stroke-dasharray="4 4" stroke-opacity="0.45" stroke-width="2" />
+    <path d="M 284 188 C 378 190, 488 188, 638 196" stroke-dasharray="6 4" stroke-opacity="0.35" stroke-width="1.5" />
+    <path d="M 468 190 C 446 236, 442 276, 456 300" stroke-dasharray="4 4" stroke-opacity="0.35" stroke-width="1.5" />
+  </g>
+</svg>

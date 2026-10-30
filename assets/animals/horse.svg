@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" fill="none">
+  <!-- Equine Lateral Clinical Silhouette (Facing Left) -->
+  <g stroke="#4F5BF5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M 88 168
+             C 94 148, 126 122, 158 98
+             L 172 64
+             L 186 88
+             L 198 66
+             L 204 94
+             C 236 112, 268 144, 304 164
+             C 334 154, 362 156, 396 166
+             C 462 172, 536 170, 604 164
+             C 648 162, 682 176, 698 204
+             C 726 216, 748 258, 752 312
+             C 738 308, 722 276, 706 244
+             C 698 278, 682 316, 678 352
+             L 680 442
+             C 680 448, 658 448, 656 442
+             L 652 354
+             C 644 328, 636 306, 622 292
+             C 568 296, 496 302, 428 298
+             C 386 296, 358 292, 338 288
+             L 332 442
+             C 332 448, 310 448, 308 442
+             L 306 284
+             C 278 272, 256 248, 240 218
+             C 222 186, 200 162, 176 154
+             C 148 168, 122 182, 102 182
+             C 90 182, 86 176, 88 168 Z"
+          fill="#4F5BF5" fill-opacity="0.04" />
+    <circle cx="152" cy="116" r="3" fill="#4F5BF5" />
+    <!-- Internal reference lines (Trachea, Spine, Diaphragm curve) -->
+    <path d="M 196 138 C 228 168, 260 198, 298 220" stroke-dasharray="4 4" stroke-opacity="0.45" stroke-width="2" />
+    <path d="M 294 172 C 402 180, 524 178, 668 184" stroke-dasharray="6 4" stroke-opacity="0.35" stroke-width="1.5" />
+    <path d="M 516 176 C 482 224, 464 264, 452 296" stroke-dasharray="4 4" stroke-opacity="0.35" stroke-width="1.5" />
+  </g>
+</svg>
