@@ -1,28 +1,244 @@
-<!DOCTYPE html>
-<html lang="en"><head>
-<meta charset="utf-8"><title>VetAcoustics</title>
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes">
-<meta name="theme-color" content="#0d9488"><link rel="manifest" href="manifest.json">
-<script src="https://cdn.tailwindcss.com"></script>
-<script>tailwind.config={darkMode:'class'}</script>
-<link rel="stylesheet" href="styles.css">
-</head>
-<body class="bg-gradient-to-br from-teal-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 text-slate-800 dark:text-slate-100 min-h-screen">
-<nav class="glass sticky top-0 z-20 flex items-center gap-2 px-4 py-2">
-  <b class="text-teal-600 text-lg mr-auto">🩺 VetAcoustics</b>
-  <button data-go="dash" class="px-4 rounded-xl">Dashboard</button>
-  <button data-go="visit" class="px-4 rounded-xl">New Visit</button>
-  <button data-go="history" class="px-4 rounded-xl">History</button>
-  <button id="theme" class="px-3 rounded-xl" aria-label="Theme">🌓</button>
-</nav>
-<main class="max-w-5xl mx-auto p-4">
-  <section id="dash" class="view"></section>
-  <section id="visit" class="view hidden"></section>
-  <section id="record" class="view hidden"></section>
-  <section id="results" class="view hidden"></section>
-  <section id="history" class="view hidden"></section>
-</main>
-<script src="anatomy.js"></script>
-<script src="app.js"></script>
-</body></html>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#eff8f7" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="VetAcoustics" />
+    <meta name="description" content="A clinical auscultation workspace for veterinary teams." />
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="icon" href="./assets/icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="./assets/icon.svg" />
+    <title>VetAcoustics · Clinical listening</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = { darkMode: "class" };
+    </script>
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="./anatomy.js" defer></script>
+    <script src="./app.js" defer></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="#" aria-label="VetAcoustics dashboard" data-view="dashboard">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 36 36"><path d="M18 6v24M6 18h24" /><circle cx="18" cy="18" r="14" /></svg>
+          </span>
+          <span><strong>VetAcoustics</strong><small>Clinical listening</small></span>
+        </a>
+        <nav class="main-nav" aria-label="Main navigation">
+          <button class="nav-link is-active" data-view="dashboard">Dashboard</button>
+          <button class="nav-link" data-view="new-visit">New visit</button>
+          <button class="nav-link" data-view="results">Results</button>
+          <button class="nav-link" data-view="history">History</button>
+        </nav>
+        <button id="open-settings" class="icon-button settings-button" aria-label="Open settings" title="Settings">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Z" /><path d="m19.4 15 .1.1a1.8 1.8 0 0 1-2.5 2.5l-.2-.1a1.8 1.8 0 0 0-3.1 1.3v.2a1.8 1.8 0 0 1-3.5 0v-.2a1.8 1.8 0 0 0-3.1-1.3l-.2.1a1.8 1.8 0 0 1-2.5-2.5l.1-.1a1.8 1.8 0 0 0-1.3-3.1h-.2a1.8 1.8 0 0 1 0-3.5h.2a1.8 1.8 0 0 0 1.3-3.1l-.1-.2a1.8 1.8 0 0 1 2.5-2.5l.2.1a1.8 1.8 0 0 0 3.1-1.3v-.2a1.8 1.8 0 0 1 3.5 0v.2a1.8 1.8 0 0 0 3.1 1.3l.2-.1a1.8 1.8 0 0 1 2.5 2.5l-.1.2a1.8 1.8 0 0 0 1.3 3.1h.2a1.8 1.8 0 0 1 0 3.5h-.2a1.8 1.8 0 0 0-1.3 3.1Z" /></svg>
+        </button>
+      </header>
+
+      <main id="main-content">
+        <section class="view active" id="view-dashboard" aria-labelledby="dashboard-title">
+          <div class="page-heading">
+            <div>
+              <p class="eyebrow" id="today-label">CLINICAL WORKSPACE</p>
+              <h1 id="dashboard-title"><span id="greeting">Good morning</span>, Doctor.</h1>
+              <p class="muted">A clear, organized view of your listening sessions.</p>
+            </div>
+            <span class="status-pill"><span class="status-dot"></span> Local demo mode</span>
+          </div>
+
+          <div class="dashboard-hero">
+            <div class="hero-copy">
+              <span class="hero-kicker"><span class="pulse-dot"></span> READY FOR YOUR NEXT PATIENT</span>
+              <h2>Listen closely.<br /><em>Care confidently.</em></h2>
+              <p>Capture a sound, review the recording, and keep the clinical context together.</p>
+              <button id="start-new-visit" class="button button-primary button-large">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" /></svg>
+                Start New Auscultation
+              </button>
+            </div>
+            <div class="hero-illustration" aria-hidden="true">
+              <div class="hero-orbit orbit-one"></div>
+              <div class="hero-orbit orbit-two"></div>
+              <div class="hero-heart">
+                <svg viewBox="0 0 96 96"><path d="M48 79S15 57 15 34a18 18 0 0 1 33-10 18 18 0 0 1 33 10c0 23-33 45-33 45Z" /><path d="M15 48h19l8-16 12 33 9-17h18" /></svg>
+              </div>
+              <div class="hero-bubble bubble-top"><span class="mini-wave">▂▅▃▇▅▂</span><span>Listening</span></div>
+              <div class="hero-bubble bubble-bottom"><span class="bubble-check">✓</span><span>Patient-first care</span></div>
+              <div class="hero-spark spark-a">✳</div><div class="hero-spark spark-b">·</div>
+            </div>
+          </div>
+
+          <div class="stat-grid">
+            <article class="stat-card"><span class="stat-icon teal-icon">◌</span><div><span class="stat-label">Total recordings</span><strong id="total-recordings">0</strong></div><span class="stat-meta">All time</span></article>
+            <article class="stat-card"><span class="stat-icon gold-icon">↗</span><div><span class="stat-label">This week</span><strong id="weekly-recordings">0</strong></div><span class="stat-meta">Last 7 days</span></article>
+            <article class="stat-card stat-card-note"><span class="stat-icon mint-icon">⌁</span><div><span class="stat-label">Your workspace</span><strong>Private by design</strong></div><span class="stat-meta">Saved on this device</span></article>
+          </div>
+
+          <div class="section-heading">
+            <div><p class="eyebrow">YOUR WORKSPACE</p><h2>Recent visits</h2></div>
+            <button class="text-button" data-view="history">View history <span aria-hidden="true">→</span></button>
+          </div>
+          <div id="recent-visits" class="visit-list"></div>
+        </section>
+
+        <section class="view" id="view-new-visit" aria-labelledby="visit-title">
+          <div class="page-heading compact-heading">
+            <div>
+              <button class="back-link" data-view="dashboard"><span aria-hidden="true">←</span> Dashboard</button>
+              <p class="eyebrow">NEW AUSCULTATION</p>
+              <h1 id="visit-title">Start with your patient.</h1>
+              <p class="muted">A guided listening workflow, with every site clearly identified.</p>
+            </div>
+            <span id="step-indicator" class="status-pill">STEP 1 OF 3</span>
+          </div>
+
+          <div class="patient-card">
+            <div class="patient-heading"><span class="patient-icon">+</span><div><strong>Patient details</strong><span>Visit context stays with the recording.</span></div></div>
+            <label class="field-label" for="patient-name">Patient name <span class="required">*</span></label>
+            <input id="patient-name" class="text-input" type="text" placeholder="e.g. Maple" autocomplete="off" />
+            <label class="field-label" for="visit-notes">Visit notes <span class="optional">(optional)</span></label>
+            <textarea id="visit-notes" class="text-input notes-input" rows="2" placeholder="Add relevant context for this recording…"></textarea>
+            <div id="collection-fields" class="collection-fields hidden">
+              <label class="field-label" for="finding">Finding label</label>
+              <select id="finding" class="text-input">
+                <option>Normal</option><option>Wheezes</option><option>Crackles</option><option>Stridor</option><option>Purring</option><option>Panting</option><option>Hair rub</option>
+              </select>
+              <label class="field-label" for="case-id">Case ID <span class="optional">(optional)</span></label>
+              <input id="case-id" class="text-input" type="text" placeholder="e.g. CASE-204" />
+            </div>
+          </div>
+
+          <div id="guided-flow" class="guided-flow">
+            <div class="step-panel active" id="step-species">
+              <div class="step-title-row"><div><p class="eyebrow">STEP 1 · SPECIES</p><h2>Who are we listening to?</h2><p class="muted">Choose a patient to see the relevant anatomy.</p></div><span class="step-number">01</span></div>
+              <div id="species-grid" class="species-grid"></div>
+            </div>
+
+            <div class="step-panel" id="step-target">
+              <div class="step-title-row"><div><p class="eyebrow">STEP 2 · LISTENING SITE</p><h2>What would you like to hear?</h2><p class="muted">Select a target and a precise site.</p></div><span class="step-number">02</span></div>
+              <div class="guided-grid">
+                <div class="anatomy-card">
+                  <div class="anatomy-toolbar"><div class="animal-name"><span id="selected-species-icon"></span><strong id="selected-species-name">Patient</strong></div><button id="rib-toggle" class="small-toggle" aria-pressed="false">Show rib overlay</button></div>
+                  <div id="anatomy-stage" class="anatomy-stage"><svg id="anatomy-svg" viewBox="0 0 600 320" role="img" aria-label="Selected animal anatomy"></svg></div>
+                  <div id="neck-inset" class="neck-inset hidden"><span>NECK DETAIL</span><strong>Ventral midline</strong><div class="neck-line"><i></i><i></i><i></i></div><small>Larynx · mid-cervical · thoracic inlet</small></div>
+                  <p class="landmark-note">Landmarks are approximate - verify with the supervising veterinarian.</p>
+                </div>
+                <div class="target-card">
+                  <p class="field-label">Listening target</p><div id="target-chips" class="target-chips"></div>
+                  <div id="side-selector" class="side-selector"><span>Patient side</span><div><button data-side="left" class="side-button is-selected">Left</button><button data-side="right" class="side-button">Right</button></div></div>
+                  <div class="sites-heading"><span>Available sites</span><span id="site-count" class="muted small-text"></span></div>
+                  <div id="site-options" class="site-options"></div>
+                  <label class="protocol-toggle"><span><strong>Full protocol</strong><small>Walk through every site in this target.</small></span><input id="full-protocol" type="checkbox" /><i aria-hidden="true"></i></label>
+                  <div class="target-actions"><button id="back-to-species" class="button button-secondary">Back</button><button id="continue-to-placement" class="button button-primary">Placement instructions <span aria-hidden="true">→</span></button></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="step-panel" id="step-placement">
+              <div class="step-title-row"><div><p class="eyebrow">STEP 3 · PLACEMENT</p><h2>Place the stethoscope.</h2><p class="muted">Follow the site guidance, then capture the sound.</p></div><span class="step-number">03</span></div>
+              <div class="guided-grid placement-grid">
+                <div class="anatomy-card placement-anatomy">
+                  <div class="anatomy-toolbar"><div class="animal-name"><span id="placement-species-icon"></span><strong id="placement-species-name">Patient</strong></div><span id="placement-site-badge" class="site-badge"></span></div>
+                  <div id="placement-stage" class="anatomy-stage"><svg id="placement-svg" viewBox="0 0 600 320" role="img" aria-label="Selected auscultation site"></svg></div>
+                  <p class="landmark-note">Landmarks are approximate - verify with the supervising veterinarian.</p>
+                  <div id="protocol-progress" class="protocol-progress hidden"><svg viewBox="0 0 44 44" aria-hidden="true"><circle class="progress-track" cx="22" cy="22" r="18"></circle><circle id="progress-ring" class="progress-value" cx="22" cy="22" r="18"></circle></svg><span id="progress-label">1 / 1 sites</span></div>
+                  <div id="completed-sites" class="completed-sites"></div>
+                </div>
+                <div class="instruction-card">
+                  <p class="eyebrow">PLACEMENT GUIDE</p><h3 id="placement-title">Listening site</h3><p id="placement-instruction" class="instruction-copy"></p>
+                  <div class="instruction-meta"><span id="placement-side" class="meta-chip"></span><span id="placement-target" class="meta-chip"></span></div>
+                  <div class="technique-box"><strong>Technique tips</strong><ul><li>Part the hair for direct skin contact.</li><li>Use firm, steady contact without pressing hard.</li><li>Keep the patient as still and calm as possible.</li></ul></div>
+                  <div class="placement-actions"><button id="back-to-target" class="button button-secondary">Back to sites</button><button id="start-recording" class="button button-primary">Start recording at this site <span aria-hidden="true">→</span></button></div>
+                  <div id="protocol-nav" class="protocol-nav hidden"><button id="protocol-previous" class="text-button">← Previous site</button><button id="protocol-next" class="text-button">Next site →</button></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <button id="manual-toggle" class="manual-toggle" aria-expanded="false"><span>＋</span> Manual selection <small>Fallback</small></button>
+          <div id="manual-fields" class="manual-fields hidden">
+            <label class="field-label" for="manual-species">Species</label><select id="manual-species" class="text-input"></select>
+            <label class="field-label" for="manual-target">Listening target</label><select id="manual-target" class="text-input"></select>
+            <label class="field-label" for="manual-side">Side</label><select id="manual-side" class="text-input"><option value="left">Left</option><option value="right">Right</option><option value="ventral">Ventral</option></select>
+            <label class="field-label" for="manual-site">Site</label><select id="manual-site" class="text-input"></select>
+            <button id="use-manual" class="button button-secondary">Use manual selection</button>
+          </div>
+
+          <section id="recording-panel" class="recording-panel hidden" aria-labelledby="recording-title">
+            <div class="recording-header"><div><p class="eyebrow">RECORDING AT THIS SITE</p><h2 id="recording-title">Listen and capture.</h2><p id="recording-context" class="muted"></p></div><button id="return-to-placement" class="text-button">Change site</button></div>
+            <div class="recording-card">
+              <div class="recording-status"><span id="recording-dot" class="recording-dot"></span><span id="recording-status-text">Ready when you are</span><strong id="recording-timer">00:00</strong></div>
+              <div id="visualizer" class="visualizer" aria-label="Live audio visualizer"></div>
+              <div class="record-controls"><button id="record-button" class="record-button" aria-label="Start recording"><span class="record-button-core"></span></button><span id="record-action-label">Tap to start recording</span></div>
+              <div class="quality-row"><span id="quality-chip" class="quality-chip">Signal check ready</span><span id="noise-warning" class="noise-warning hidden">Noisy environment detected</span><div class="ten-second"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="19"></circle><circle id="ten-second-ring" class="ten-ring" cx="24" cy="24" r="19"></circle></svg><span id="ten-second-count">10s</span></div><span class="muted small-text">Recommended minimum</span></div>
+              <p class="recording-hint">Recording is processed in this browser. Nothing is uploaded in demo mode.</p>
+            </div>
+            <div id="playback-card" class="playback-card hidden">
+              <div class="playback-heading"><div><strong>Recording ready</strong><span id="recording-file-name"></span></div><a id="download-recording" class="button button-secondary download-button" download>Download WAV</a></div>
+              <audio id="audio-player" controls></audio>
+              <div class="spectrogram-header"><div><strong>Recording spectrogram</strong><span>Frequency over time · computed from this recording</span></div><span class="spectrogram-key"><i></i> Lower <i></i> Higher</span></div>
+              <div class="spectrogram-wrap"><canvas id="spectrogram-capture" aria-label="Audio spectrogram"></canvas><div class="spectrogram-cursor" id="capture-cursor"></div></div>
+              <div class="spectrogram-axis"><span>0:00</span><span>TIME</span><span id="capture-duration">—</span></div>
+              <div class="playback-actions"><button id="reanalyze-audio" class="button button-primary">Run AI Analysis (Demo) <span aria-hidden="true">→</span></button><button id="record-again" class="text-button">Record again</button></div>
+            </div>
+          </section>
+        </section>
+
+        <section class="view" id="view-results" aria-labelledby="results-title">
+          <div class="page-heading compact-heading">
+            <div><button class="back-link" data-view="new-visit"><span aria-hidden="true">←</span> Recording</button><p class="eyebrow">DEMO ANALYSIS</p><h1 id="results-title">Sound review</h1><p id="results-subtitle" class="muted">Review acoustic patterns alongside clinical judgment.</p></div>
+            <span id="results-species-badge" class="status-pill">DEMO DATA</span>
+          </div>
+          <div id="analysis-loading" class="analysis-loading hidden">
+            <div class="scan-visual"><div class="scan-orbit"></div><div class="scan-sweep"></div><span>⌁</span></div>
+            <p class="eyebrow">ACOUSTIC REVIEW</p><h2>Running acoustic model...</h2><p class="muted">Comparing the recording against demo sound profiles.</p><div class="loading-track"><i></i></div>
+          </div>
+          <div id="results-empty" class="empty-card hidden"><span class="empty-symbol">⌁</span><h2>No analysis yet</h2><p>Record a sound first, then run the demo analysis.</p><button class="button button-primary" data-view="new-visit">Go to recording</button></div>
+          <div id="analysis-result" class="analysis-result hidden">
+            <div id="confidence-state" class="confidence-state"></div>
+            <div class="result-grid">
+              <div class="result-main-card">
+                <div class="result-card-heading"><div><p class="eyebrow">PREDICTED SOUND</p><span id="result-target-label" class="result-context"></span></div><span class="demo-pill">DEMO</span></div>
+                <h2 id="predicted-sound" class="predicted-sound"></h2>
+                <div class="confidence-line"><span>Demo confidence</span><strong id="confidence-number">0%</strong></div>
+                <div class="confidence-track"><span id="confidence-bar"></span></div>
+                <p id="confidence-caption" class="muted small-text"></p>
+                <div class="spectrogram-header result-spectrogram-heading"><div><strong>Acoustic spectrogram</strong><span>AI attention overlay is illustrative demo output.</span></div><span class="attention-key"><i></i> AI attention · demo</span></div>
+                <div class="spectrogram-wrap result-spectrogram"><canvas id="spectrogram-results" aria-label="Recording spectrogram with demo AI attention overlay"></canvas><div class="spectrogram-cursor" id="results-cursor"></div></div>
+                <audio id="results-player" controls></audio>
+              </div>
+              <div class="result-side-column">
+                <div class="result-detail-card"><p class="eyebrow">DIFFERENTIALS</p><h3>Consider with context</h3><ol id="differentials-list" class="ranked-list"></ol></div>
+                <div class="result-detail-card"><p class="eyebrow">SUGGESTED NEXT STEPS</p><h3>Tests to consider</h3><ul id="tests-list" class="test-list"></ul></div>
+                <div class="result-detail-card patient-summary"><p class="eyebrow">VISIT SUMMARY</p><div id="result-visit-summary"></div></div>
+              </div>
+            </div>
+            <div class="clinical-disclaimer"><span aria-hidden="true">ⓘ</span><p>AI-assisted tool. Complements, never replaces, veterinary judgment. Demo data.</p></div>
+            <div class="result-actions"><button id="save-visit" class="button button-primary">Save Visit</button><button id="save-next-site" class="button button-secondary hidden">Save Visit &amp; Next Site</button><button class="button button-quiet" data-view="dashboard">Back to Dashboard</button></div>
+          </div>
+        </section>
+
+        <section class="view" id="view-history" aria-labelledby="history-title">
+          <div class="page-heading compact-heading"><div><p class="eyebrow">YOUR RECORDS</p><h1 id="history-title">Visit history</h1><p class="muted">Recordings saved on this device.</p></div><button id="history-new-visit" class="button button-primary">＋ New visit</button></div>
+          <div id="history-visits" class="visit-list history-list"></div>
+          <div id="history-empty" class="empty-card hidden"><span class="empty-symbol">◷</span><h2>Your history starts here.</h2><p>Saved visits will appear here after a recording is reviewed.</p><button class="button button-primary" data-view="new-visit">Start an auscultation</button></div>
+        </section>
+      </main>
+
+      <footer class="app-footer"><span>VetAcoustics <i>·</i> Clinical demo</span><span>Landmarks are approximate. Verify with the supervising veterinarian.</span></footer>
+    </div>
+
+    <dialog id="settings-dialog" class="settings-dialog">
+      <div class="dialog-head"><div><p class="eyebrow">PREFERENCES</p><h2>Settings</h2></div><button id="close-settings" class="icon-button" aria-label="Close settings">×</button></div>
+      <div class="setting-row"><div><strong>Appearance</strong><small>Follow your device or choose a theme.</small></div><button id="theme-toggle" class="button button-secondary">Use dark mode</button></div>
+      <div class="setting-row"><div><strong>Collection Mode</strong><small>Add finding labels and case IDs for dataset collection.</small></div><label class="switch-control"><input id="collection-toggle" type="checkbox" /><i></i></label></div>
+      <p class="settings-note">Demo visits and settings are stored locally in this browser. Recording audio remains in memory unless you download the WAV file.</p>
+    </dialog>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  </body>
+</html>
