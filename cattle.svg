@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" fill="none">
+  <!-- Bovine Lateral Clinical Silhouette (Facing Left) -->
+  <g stroke="#4F5BF5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M 96 204
+             C 100 182, 126 162, 154 146
+             C 162 128, 178 118, 196 118
+             C 188 98, 202 82, 218 86
+             C 214 102, 218 114, 228 122
+             C 262 132, 292 142, 332 136
+             C 372 130, 412 146, 468 148
+             C 548 150, 626 148, 684 156
+             C 706 164, 718 196, 724 252
+             C 730 296, 732 336, 726 364
+             C 716 346, 712 296, 704 244
+             C 694 282, 682 322, 678 358
+             L 680 438
+             C 680 444, 656 444, 654 438
+             L 648 356
+             C 636 336, 618 324, 592 322
+             C 528 328, 448 326, 368 314
+             L 346 312
+             L 342 438
+             C 342 444, 318 444, 316 438
+             L 312 308
+             C 278 298, 246 282, 222 256
+             C 202 234, 188 218, 168 214
+             C 142 218, 116 218, 102 214
+             C 94 212, 94 208, 96 204 Z"
+          fill="#4F5BF5" fill-opacity="0.04" />
+    <circle cx="158" cy="162" r="3" fill="#4F5BF5" />
+    <!-- Internal reference lines -->
+    <path d="M 196 176 C 228 196, 262 218, 298 236" stroke-dasharray="4 4" stroke-opacity="0.45" stroke-width="2" />
+    <path d="M 284 156 C 398 160, 536 160, 672 166" stroke-dasharray="6 4" stroke-opacity="0.35" stroke-width="1.5" />
+    <path d="M 468 160 C 446 216, 442 268, 456 318" stroke-dasharray="4 4" stroke-opacity="0.35" stroke-width="1.5" />
+  </g>
+</svg>

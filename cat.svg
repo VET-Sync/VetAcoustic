@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" fill="none">
+  <!-- Feline Lateral Clinical Silhouette (Facing Left) -->
+  <g stroke="#4F5BF5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M 138 176
+             C 142 158, 158 144, 176 138
+             L 184 102
+             L 206 126
+             C 214 124, 222 126, 228 128
+             L 242 104
+             L 246 138
+             C 266 158, 286 176, 316 182
+             C 386 176, 476 174, 558 182
+             C 608 186, 646 196, 668 214
+             C 708 196, 742 162, 756 124
+             C 766 128, 758 176, 716 212
+             C 692 228, 678 242, 672 268
+             C 666 298, 650 328, 654 364
+             L 658 424
+             C 658 432, 638 434, 634 426
+             L 630 364
+             C 620 336, 610 308, 596 290
+             C 554 288, 496 290, 448 294
+             C 406 298, 368 304, 344 304
+             L 338 424
+             C 338 432, 318 434, 314 426
+             L 312 302
+             C 282 292, 258 274, 244 250
+             C 228 226, 212 208, 192 198
+             C 168 198, 148 192, 138 182 Z"
+          fill="#4F5BF5" fill-opacity="0.04" />
+    <circle cx="172" cy="156" r="3" fill="#4F5BF5" />
+    <!-- Internal reference lines -->
+    <path d="M 224 166 C 248 188, 276 212, 314 228" stroke-dasharray="4 4" stroke-opacity="0.45" stroke-width="2" />
+    <path d="M 294 190 C 388 186, 488 186, 628 202" stroke-dasharray="6 4" stroke-opacity="0.35" stroke-width="1.5" />
+    <path d="M 464 188 C 444 232, 440 268, 454 292" stroke-dasharray="4 4" stroke-opacity="0.35" stroke-width="1.5" />
+  </g>
+</svg>
